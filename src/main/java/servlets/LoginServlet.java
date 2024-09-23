@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 
-@WebServlet(name = "LoginServlet", urlPatterns = "/login")
+@WebServlet(name = "loginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
     private Database db;
 
@@ -24,11 +24,16 @@ public class LoginServlet extends HttpServlet {
 
         // Kontrollera om anslutningen är null
         if (conn != null) {
-            Database db = Database.getInstance();
-
+            // Skapa en instans av Database med den hämtade anslutningen
+            db = new Database(conn);
         } else {
             throw new ServletException("Database connection not initialized properly.");
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("jsp/login.jsp").forward(req, resp);
     }
 
     @Override
@@ -40,6 +45,7 @@ public class LoginServlet extends HttpServlet {
         UserBean user = db.findUserByUsername(username);
 
         if (user != null && password.equals(user.getPassword())) {
+            // Determine the user type and redirect accordingly
             if (user.getUserType() == UserType.TEACHER) {
                 response.sendRedirect("TeacherPage.jsp");
             } else if (user.getUserType() == UserType.STUDENT) {

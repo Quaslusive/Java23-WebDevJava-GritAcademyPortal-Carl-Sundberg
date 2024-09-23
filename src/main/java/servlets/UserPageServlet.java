@@ -6,6 +6,7 @@ import model.UserBean;
 import model.UserType;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +14,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.List;
 
+@WebServlet(name = "userPageServlet", urlPatterns = "/userpage")
 public class UserPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -25,66 +28,33 @@ public class UserPageServlet extends HttpServlet {
             return;
         }
 
-        ArrayList<Course> courses = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
 
         try {
-            // Hämta anslutningen från servletens kontext
+            // Retrieve the database connection from the servlet context
             Connection conn = (Connection) getServletContext().getAttribute("DBConnection");
 
             if (conn == null) {
                 throw new ServletException("Database connection not initialized properly.");
             }
 
-            // Skapa en instans av Database med den hämtade anslutningen
-            Database db = Database.getInstance();
+            // Create a Database instance with the connection
+            Database db = new Database(conn);
 
-
+            // Fetch courses based on user type
             if (user.getUserType() == UserType.STUDENT) {
-                courses = (ArrayList<Course>) db.getCoursesForStudent(user.getUsername());
+                courses = db.getCoursesForStudent(user.getUsername());
             } else if (user.getUserType() == UserType.TEACHER) {
-                courses = (ArrayList<Course>) db.getCoursesForTeacher(user.getUsername());
+                courses = db.getCoursesForTeacher(user.getUsername());
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            response.sendRedirect("error.jsp"); // Redirect to an error page if an exception occurs
+            return;
         }
 
         request.setAttribute("courses", courses);
         request.getRequestDispatcher("/JSP/userPage.jsp").forward(request, response);
     }
 }
-
-
-
-
-
-
-
-
-
-
-/*
-
-package servlets;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-@WebServlet(name = "UserPageServlet",  urlPatterns = "/userpage")
-public class UserPageServlet extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-    }
-}
-*/

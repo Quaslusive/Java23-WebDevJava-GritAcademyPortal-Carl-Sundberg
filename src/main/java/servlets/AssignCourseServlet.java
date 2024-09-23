@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 
-
-@WebServlet("/assignCourse")
+@WebServlet(name = "assignCourseServlet", urlPatterns = "/assignCourse")
 public class AssignCourseServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -22,35 +21,30 @@ public class AssignCourseServlet extends HttpServlet {
         String teacherId = request.getParameter("teacherId");
         String courseId = request.getParameter("courseId");
 
-        Database db = Database.getInstance();
+        // Retrieve the connection from the servlet context
+        Connection conn = (Connection) getServletContext().getAttribute("DBConnection");
+
+        if (conn == null) {
+            throw new ServletException("Database connection not initialized properly.");
+        }
+
+        // Create a Database instance using the connection
+        Database db = new Database(conn);
+
+        // Find the teacher by their username (teacherId) and check their user type
         UserBean user = db.findUserByUsername(teacherId);
 
         if (user != null && user.getUserType() == UserType.TEACHER) {
-            db.assignTeacherToCourse(Integer.parseInt(teacherId), Integer.parseInt(courseId));
-            response.sendRedirect("success.jsp");
+            // Assign the teacher to the course
+            boolean success = db.assignTeacherToCourse(Integer.parseInt(teacherId), Integer.parseInt(courseId));
+
+            if (success) {
+                response.sendRedirect("success.jsp");
+            } else {
+                response.sendRedirect("error.jsp");
+            }
         } else {
             response.sendRedirect("error.jsp");
         }
     }
-
-
 }
-
-/*
-@WebServlet("/AssignCourseServlet")
-public class AssignCourseServlet extends HttpServlet {
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int teacherId = Integer.parseInt(request.getParameter("teacherId"));
-        int courseId = Integer.parseInt(request.getParameter("courseId"));
-        Database db = Database.getInstance();
-        boolean success = db.assignTeacherToCourse(teacherId, courseId);
-
-        if (success) {
-            response.sendRedirect("userPage.jsp");  // Redirect till en relevant sida efter att ha lyckats
-        } else {
-            response.sendRedirect("assignCourse.jsp?error=assign_failed");  // Visa ett felmeddelande
-        }
-    }*/
-

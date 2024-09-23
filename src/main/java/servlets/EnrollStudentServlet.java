@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
 
-@WebServlet("/enroll")
+@WebServlet(name = "enrollStudentServlet", urlPatterns = "/enroll")
 public class EnrollStudentServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -20,12 +21,29 @@ public class EnrollStudentServlet extends HttpServlet {
         String username = request.getParameter("username");
         String courseId = request.getParameter("courseId");
 
-        Database db = Database.getInstance();
+        // Retrieve the connection from the servlet context
+        Connection conn = (Connection) getServletContext().getAttribute("DBConnection");
+
+        if (conn == null) {
+            throw new ServletException("Database connection not initialized properly.");
+        }
+
+        // Create a Database instance using the connection
+        Database db = new Database(conn);
+
+        // Find the user by their username
         UserBean user = db.findUserByUsername(username);
 
+        // Check if the user exists and is of type STUDENT
         if (user != null && user.getUserType() == UserType.STUDENT) {
-            db.enrollStudentInCourse(Integer.parseInt(username), Integer.parseInt(courseId));
-            response.sendRedirect("success.jsp");
+            // Enroll the student in the course
+            boolean success = db.enrollStudentInCourse(user.getId(), Integer.parseInt(courseId));
+
+            if (success) {
+                response.sendRedirect("success.jsp");
+            } else {
+                response.sendRedirect("error.jsp");
+            }
         } else {
             response.sendRedirect("error.jsp");
         }
