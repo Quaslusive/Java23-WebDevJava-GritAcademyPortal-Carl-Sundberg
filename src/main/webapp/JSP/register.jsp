@@ -1,45 +1,34 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Gamingcalle_Mark-3
-  Date: 2024-08-21
-  Time: 23:33
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="navbar.jsp" %>
 
-<div class="container">
-    <h2>Register New User</h2>
-    <form action="register" method="post">
-        <label for="fName">First Name:</label>
-        <input type="text" id="fName" name="fName" required>
-        <br>
-        <label for="lName">Last Name:</label>
-        <input type="text" id="lName" name="lName" required>
-        <br>
-        <label for="town">Town:</label>
-        <input type="text" id="town" name="town">
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <br>
-        <label for="phone">Phone:</label>
-        <input type="text" id="phone" name="phone">
-        <br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+</head>
+<body>
+<div class="register-container">
+    <h2>Register</h2>
+    <form action="${pageContext.request.contextPath}/register" method="post">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
+        <input type="text" id="username" name="username" required><br>
+
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <label for="privilage_type">Privilage Type:</label>
-        <select id="privilage_type" name="privilage_type">
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-        </select>
-        <br>
-        <button type="submit">Register</button>
+        <input type="password" id="password" name="password" required><br>
+
+        <label for="userType">User Type:</label>
+        <select name="userType" id="userType">
+            <option value="STUDENT">Student</option>
+            <option value="TEACHER">Teacher</option>
+        </select><br>
+
+        <input type="submit" value="Register">
     </form>
+
+    <p style="color:red;"><%= request.getParameter("error") %></p>
 </div>
 
-<%@ include file="Fragments/footer.jsp" %>
+<%@ include file="/JSP/Fragments/footer.jsp" %>
+</body>
+</html>

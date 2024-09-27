@@ -11,9 +11,16 @@
         </session-timeout>
     </session-config>
 
-    <!-- Optional: If you want to explicitly declare servlets -->
 
-    <!-- RegisterServlet -->
+
+
+    <display-name>My Web Application</display-name>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+<!--
+    &lt;!&ndash; RegisterServlet &ndash;&gt;
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>servlets.RegisterServlet</servlet-class>
@@ -23,7 +30,27 @@
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
 
-    <!-- LoginServlet -->
+
+    <servlet>
+        <servlet-name>userPageServlet</servlet-name>
+        <servlet-class>servlets.UserPageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>userPageServlet</servlet-name>
+        <url-pattern>/userpage</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>coursesServlet</servlet-name>
+        <servlet-class>servlets.CoursesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>coursesServlet</servlet-name>
+        <url-pattern>/courses</url-pattern>
+    </servlet-mapping>
+
+
+    &lt;!&ndash; LoginServlet &ndash;&gt;
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>servlets.LoginServlet</servlet-class>
@@ -33,7 +60,7 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
-    <!-- AssignCourseServlet -->
+    &lt;!&ndash; AssignCourseServlet &ndash;&gt;
     <servlet>
         <servlet-name>AssignCourseServlet</servlet-name>
         <servlet-class>servlets.AssignCourseServlet</servlet-class>
@@ -43,7 +70,7 @@
         <url-pattern>/assignCourse</url-pattern>
     </servlet-mapping>
 
-    <!-- EnrollStudentServlet -->
+    &lt;!&ndash; EnrollStudentServlet &ndash;&gt;
     <servlet>
         <servlet-name>EnrollStudentServlet</servlet-name>
         <servlet-class>servlets.EnrollStudentServlet</servlet-class>
@@ -52,5 +79,6 @@
         <servlet-name>EnrollStudentServlet</servlet-name>
         <url-pattern>/enroll</url-pattern>
     </servlet-mapping>
+-->
 
 </web-app>

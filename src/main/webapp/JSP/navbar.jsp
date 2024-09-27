@@ -5,7 +5,7 @@
     <% if (session.getAttribute("username") == null) { %>
     <a href="JSP/login.jsp">Login</a>
     <% } else { %>
-    <a href="userPage.jsp">Dashboard</a>
+    <a href="UserPage.jsp">Dashboard</a>
     <a href="logout.jsp">Logout</a>
     <% } %>
 </div>

@@ -10,44 +10,48 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 
 @WebServlet(name = "registerServlet", urlPatterns = "/register")
 public class RegisterServlet extends HttpServlet {
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Retrieve form parameters
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String userTypeParam = request.getParameter("userType");
 
-        // Convert userTypeParam to an enum
-        UserType userType = UserType.valueOf(userTypeParam.toUpperCase());
+        try {
+            // Convert userTypeParam to an enum (validate against the UserType enum)
+            UserType userType = UserType.valueOf(userTypeParam.toUpperCase());
 
-        // Create a new UserBean object
-        UserBean newUser = new UserBean();
-        newUser.setUsername(username);
-        newUser.setPassword(password);
-        newUser.setUserType(userType);
+            // Create a new UserBean object
+            UserBean newUser = new UserBean();
+            newUser.setUsername(username);
+            newUser.setPassword(password);  // In production, hash the password before saving it
+            newUser.setUserType(userType);
 
-        // Retrieve the database connection from the servlet context
-        Connection conn = (Connection) getServletContext().getAttribute("DBConnection");
+            // Initialize the Database instance (no need to pass a Connection from ServletContext)
+            Database db = new Database();
 
-        if (conn == null) {
-            throw new ServletException("Database connection not initialized properly.");
-        }
+            // Add the new user to the database
+            boolean success = db.addUser(newUser);  // Ensure addUser method exists in Database
 
-        // Create a Database instance using the connection
-        Database db = new Database(conn);
+            // Redirect based on the success of the registration
+            if (success) {
+                response.sendRedirect("login.jsp");  // Redirect to login if registration is successful
+            } else {
+                response.sendRedirect("register.jsp?error=Registration failed");
+            }
 
-        // Add the new user to the database
-        boolean success = db.addUser(newUser);  // Implement addUser method in Database
-
-        // Redirect the user based on whether registration was successful
-        if (success) {
-            response.sendRedirect("login.jsp");
-        } else {
+        } catch (IllegalArgumentException e) {
+            // Handle invalid userType
+            response.sendRedirect("register.jsp?error=Invalid user type");
+        } catch (Exception e) {
+            // Handle any other exceptions
+            e.printStackTrace();
             response.sendRedirect("register.jsp?error=Registration failed");
         }
     }

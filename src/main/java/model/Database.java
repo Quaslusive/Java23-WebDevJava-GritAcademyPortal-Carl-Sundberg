@@ -1,58 +1,25 @@
 package model;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import com.mysql.cj.jdbc.MysqlDataSource;
-import javax.sql.DataSource;
 
-@WebListener
-public class Database implements ServletContextListener {
-    private final Connection connection;
+public class Database {
 
-    public Database(Connection connection) {
-        this.connection = connection;
-    }
-    // Configuration constants
-    private static final int PORT = 3306;
-    private static final String DATABASE = "gritacademyportal";
-    private static final String USER = "admin";
+    // JDBC URL, username, and password for MySQL database
+    private static final String URL = "jdbc:mysql://localhost:3306/gritacademyportal";
+    private static final String USER = "root";
     private static final String PASSWORD = "";
-    private static final String CONNECTION_URL = "jdbc:mysql://localhost:3306/" + DATABASE;
-/*    private static final String CONNECTION_URL = "jdbc:mysql://localhost:" + PORT + "/" + DATABASE;*/
-    private static final DataSource dataSource = getDataSource();
 
-    // Method to create and configure the DataSource
-    private static DataSource getDataSource() {
-        MysqlDataSource mysqlDataSource = new MysqlDataSource();
-        mysqlDataSource.setURL(CONNECTION_URL);
-        mysqlDataSource.setUser(USER);
-        mysqlDataSource.setPassword(PASSWORD);
-        return mysqlDataSource;
-    }
-/*
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        try {
-            // Initialize the DataSource and set it in the ServletContext
-            sce.getServletContext().setAttribute("DataSource", dataSource);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to initialize the DataSource.", e);
-        }
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        // No need to explicitly close connections when using DataSource
-    }*/
-
-    // Retrieve a connection from the DataSource
+    // Method to get a database connection
     public static Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            // Consider re-throwing as a RuntimeException
+        }
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
     // Simplified method to find user by username
@@ -68,7 +35,9 @@ public class Database implements ServletContextListener {
         UserBean user = null;
         String query = "SELECT * FROM " + tableName + " WHERE username = ?";
 
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setString(1, username);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -101,11 +70,13 @@ public class Database implements ServletContextListener {
                 "JOIN " + userTable + " u ON uc." + userIdColumn + " = u.id " +
                 "WHERE u.username = ?";
 
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setString(1, username);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    courses.add(new Course(rs.getString("name"), rs.getString("description")));
+                    courses.add(new Course(rs.getString("name"), rs.getInt("yhp"), rs.getString("description")));
                 }
             }
         } catch (SQLException e) {
@@ -118,9 +89,12 @@ public class Database implements ServletContextListener {
         List<Course> courses = new ArrayList<>();
         String query = "SELECT * FROM Courses";
 
-        try (Connection conn = getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
             while (rs.next()) {
-                courses.add(new Course(rs.getString("name"), rs.getString("description")));
+                courses.add(new Course(rs.getString("name"),rs.getInt("yhp"), rs.getString("description")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -131,16 +105,20 @@ public class Database implements ServletContextListener {
 
     public void registerTeacher(String fName, String lName, String town, String email, String phone, String username, String password, String privilegeType) {
         String query = "INSERT INTO Teachers (fName, lName, town, email, phone, username, password, privilege_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setString(1, fName);
             stmt.setString(2, lName);
             stmt.setString(3, town);
             stmt.setString(4, email);
             stmt.setString(5, phone);
             stmt.setString(6, username);
-            stmt.setString(7, password);
+            stmt.setString(7, password); // In production, hash the password!
             stmt.setString(8, privilegeType);
             stmt.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -148,15 +126,19 @@ public class Database implements ServletContextListener {
 
     public void registerStudent(String fName, String lName, String town, String email, String phone, String username, String password) {
         String query = "INSERT INTO Students (fName, lName, town, email, phone, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setString(1, fName);
             stmt.setString(2, lName);
             stmt.setString(3, town);
             stmt.setString(4, email);
             stmt.setString(5, phone);
             stmt.setString(6, username);
-            stmt.setString(7, password);
+            stmt.setString(7, password); // In production, hash the password!
             stmt.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -172,26 +154,59 @@ public class Database implements ServletContextListener {
 
     private boolean assignToCourse(String tableName, String userIdColumn, int userId, int courseId) {
         String query = "INSERT INTO " + tableName + " (" + userIdColumn + ", courses_id) VALUES (?, ?)";
-        try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
             pstmt.setInt(1, userId);
             pstmt.setInt(2, courseId);
             pstmt.executeUpdate();
             return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-    public boolean addUser(UserBean user) {
-        String query = "INSERT INTO Users (username, password, user_type) VALUES (?, ?, ?)";
+/*public boolean addUser(UserBean user) {
+    String query = "INSERT INTO Users (username, password, user_type) VALUES (?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+    try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setString(1, user.getUsername());
+        stmt.setString(2, user.getPassword());  // In production, hash the password!
+        stmt.setString(3, user.getUserType().name());
+
+        int rowsAffected = stmt.executeUpdate();
+        return rowsAffected > 0;  // Return true if the user was successfully added
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+*/
+    public boolean addUser(UserBean user) {
+        String query;
+        if (user.getUserType() == UserType.STUDENT) {
+            query = "INSERT INTO Students (username, password) VALUES (?, ?)";
+        } else if (user.getUserType() == UserType.TEACHER) {
+            query = "INSERT INTO Teachers (username, password, privilege_type) VALUES (?, ?, ?)";
+        } else {
+            // Handle other user types if necessary
+            return false;
+        }
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
             stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPassword());  // In production, hash the password!
-            stmt.setString(3, user.getUserType().name());
+            stmt.setString(2, user.getPassword()); // In production, hash the password!
+            if (user.getUserType() == UserType.TEACHER) {
+                stmt.setString(3, "user"); // Or use user.getPrivilegeType()
+            }
 
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

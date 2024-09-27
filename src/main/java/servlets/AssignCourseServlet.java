@@ -10,41 +10,36 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 
-@WebServlet(name = "assignCourseServlet", urlPatterns = "/assignCourse")
+@WebServlet( urlPatterns = "/assignCourse")
 public class AssignCourseServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String teacherId = request.getParameter("teacherId");
-        String courseId = request.getParameter("courseId");
+        String teacherUsername = request.getParameter("teacherId");  // Username of the teacher
+        String courseId = request.getParameter("courseId");  // Course ID
 
-        // Retrieve the connection from the servlet context
-        Connection conn = (Connection) getServletContext().getAttribute("DBConnection");
+        // Initialize the Database
+        Database db = new Database();  // No need to pass Connection from ServletContext
 
-        if (conn == null) {
-            throw new ServletException("Database connection not initialized properly.");
-        }
+        // Find the teacher by their username
+        UserBean user = db.findUserByUsername(teacherUsername);
 
-        // Create a Database instance using the connection
-        Database db = new Database(conn);
-
-        // Find the teacher by their username (teacherId) and check their user type
-        UserBean user = db.findUserByUsername(teacherId);
-
+        // Check if the user exists and if they are a teacher
         if (user != null && user.getUserType() == UserType.TEACHER) {
-            // Assign the teacher to the course
-            boolean success = db.assignTeacherToCourse(Integer.parseInt(teacherId), Integer.parseInt(courseId));
+            // Assign the teacher to the course using the teacher's ID from UserBean
+            boolean success = db.assignTeacherToCourse(user.getId(), Integer.parseInt(courseId));
 
+            // Redirect based on success or failure
             if (success) {
                 response.sendRedirect("success.jsp");
             } else {
-                response.sendRedirect("error.jsp");
+                response.sendRedirect("error.jsp?message=Assignment failed");
             }
         } else {
-            response.sendRedirect("error.jsp");
+            // Handle error if user is not found or is not a teacher
+            response.sendRedirect("error.jsp?message=Invalid teacher");
         }
     }
 }

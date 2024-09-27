@@ -29,7 +29,7 @@ public class EnrollStudentServlet extends HttpServlet {
         }
 
         // Create a Database instance using the connection
-        Database db = new Database(conn);
+        Database db = new Database();
 
         // Find the user by their username
         UserBean user = db.findUserByUsername(username);
