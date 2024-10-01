@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
+
 @WebServlet(name = "coursesServlet", urlPatterns = "/courses")
 public class CoursesServlet extends HttpServlet {
 
@@ -30,11 +31,12 @@ public class CoursesServlet extends HttpServlet {
             return;
         }
 
-        List<Course> courses;
+        List<Course> courses = null;
 
+        Database db;
         try {
-            // Initialize the Database instance (no need for connection from ServletContext)
-            Database db = new Database();
+            // Initialize the Database instance
+            db = new Database();
 
             // Fetch the courses based on the user's type
             if (user.getUserType() == UserType.STUDENT) {
@@ -51,8 +53,15 @@ public class CoursesServlet extends HttpServlet {
             return;
         }
 
+        System.out.println("Fetching courses for user: " + user.getUsername());
+        courses = db.getAllCourses();
         // Set courses as a request attribute and forward to the courses.jsp
         request.setAttribute("coursesData", courses);
-        request.getRequestDispatcher("JSP/courses.jsp").forward(request, response);
+        request.getRequestDispatcher("/JSP/courses.jsp").forward(request, response);
+        request.getRequestDispatcher("/JSP/UserPage.jsp").forward(request, response);
+        request.getRequestDispatcher("/JSP/courseListFragment.jsp").forward(request, response);
+
     }
 }
+
+

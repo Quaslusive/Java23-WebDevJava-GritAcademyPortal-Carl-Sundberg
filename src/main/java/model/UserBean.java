@@ -1,11 +1,14 @@
 package model;
 
-public class UserBean {
+import java.io.Serializable;
+
+public class UserBean implements Serializable {
     private int id;  // Add the ID field here
     private String username;
     private UserType userType;
     private StateType stateType;
-    private String password; // Om du vill inkludera lösenordet
+    private String password;
+    private PrivilegeType privilegeType; // Om du vill inkludera lösenordet
 
     // Getter and Setter for 'id'
     public int getId() {
@@ -47,5 +50,10 @@ public class UserBean {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public PrivilegeType getPrivilegeType() {
+        return privilegeType;
+
     }
 }

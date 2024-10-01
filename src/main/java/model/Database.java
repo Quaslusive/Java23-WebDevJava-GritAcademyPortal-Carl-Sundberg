@@ -19,6 +19,7 @@ public class Database {
             e.printStackTrace();
             // Consider re-throwing as a RuntimeException
         }
+
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
@@ -55,6 +56,21 @@ public class Database {
         return user;
     }
 
+
+    public List<Course> getCoursesForStudent(String username) {
+        System.out.println("Fetching courses for student: " + username);
+        return getCourses(username, "Students", "Students_Courses", "students_id");
+    }
+
+
+    public List<Course> getCoursesForTeacher(String username) {
+        System.out.println("Fetching courses for teacher: " + username);
+        return getCourses(username, "Teachers", "Teachers_Courses", "teachers_id");
+    }
+
+
+/*
+
     public List<Course> getCoursesForStudent(String username) {
         return getCourses(username, "Students", "Students_Courses", "students_id");
     }
@@ -62,6 +78,7 @@ public class Database {
     public List<Course> getCoursesForTeacher(String username) {
         return getCourses(username, "Teachers", "Teachers_Courses", "teachers_id");
     }
+*/
 
     private List<Course> getCourses(String username, String userTable, String courseTable, String userIdColumn) {
         List<Course> courses = new ArrayList<>();
@@ -99,6 +116,7 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("Number of courses fetched: " + courses.size());
 
         return courses;
     }

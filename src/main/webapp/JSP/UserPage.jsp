@@ -1,5 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,15 +8,19 @@
 </head>
 <body>
 <div class="container">
-    <h2>Welcome, <%= session.getAttribute("user").getUsername() %>!</h2>
+    <h2>Welcome, ${user.username}!</h2>
     <h3>Your Courses</h3>
 
-    <c:if test="${empty courses}">
+    <c:if test="${empty coursesData}">
         <p>You are not enrolled in any courses.</p>
     </c:if>
-    <c:forEach var="course" items="${courses}">
-        <p><b>Course:</b> ${course.name}</p>
-        <p><b>Description:</b> ${course.description}</p>
+
+    <c:forEach var="course" items="${coursesData}">
+        <div class="course">
+            <h4>${course.name}</h4>
+            <p><b>Description:</b> ${course.description}</p>
+            <p><b>YHP:</b> ${course.yhp}</p>
+        </div>
     </c:forEach>
 </div>
 

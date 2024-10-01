@@ -46,13 +46,15 @@ public class LoginServlet extends HttpServlet {
             if (user.getUserType() == UserType.TEACHER) {
                 response.sendRedirect("/JSP/TeacherPage.jsp");
             } else if (user.getUserType() == UserType.STUDENT) {
-                response.sendRedirect("/JSP/StudentPage.jsp");
+                response.sendRedirect("/JSP/UserPage.jsp");
             } else {
                 response.sendRedirect("/JSP/login.jsp?error=Invalid user type");
             }
+            System.out.println(username + "," + password);
         } else {
             // Redirect back to login page with an error message
             response.sendRedirect("/JSP/login.jsp?error=Invalid username or password");
         }
+
     }
 }
