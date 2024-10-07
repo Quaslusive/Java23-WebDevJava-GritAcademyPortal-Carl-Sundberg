@@ -10,6 +10,10 @@ public class UserBean implements Serializable {
     private String password;
     private PrivilegeType privilegeType; // Om du vill inkludera lösenordet
 
+    public UserBean() {
+
+    }
+
     // Getter and Setter for 'id'
     public int getId() {
         return id;

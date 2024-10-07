@@ -1,5 +1,6 @@
 package servlets;
 
+import model.Course;
 import model.Database;
 import model.UserBean;
 import model.UserType;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "loginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
@@ -18,14 +20,12 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        // Initialize the Database instance directly
-        db = new Database(); // No need for a connection from ServletContext
+        db = new Database();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Forward to the login page (JSP)
-        req.getRequestDispatcher("/jsp/login.jsp").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/JSP/login.jsp");
     }
 
     @Override
@@ -44,17 +44,19 @@ public class LoginServlet extends HttpServlet {
 
             // Determine the user type and redirect accordingly
             if (user.getUserType() == UserType.TEACHER) {
-                response.sendRedirect("/JSP/TeacherPage.jsp");
+                response.sendRedirect(request.getContextPath() + "/JSP/userPage.jsp");
             } else if (user.getUserType() == UserType.STUDENT) {
-                response.sendRedirect("/JSP/UserPage.jsp");
+                response.sendRedirect(request.getContextPath() + "/JSP/userPage.jsp");
             } else {
-                response.sendRedirect("/JSP/login.jsp?error=Invalid user type");
+                response.sendRedirect(request.getContextPath() + "/JSP/login.jsp?error=Invalid user type");
             }
-            System.out.println(username + "," + password);
-        } else {
-            // Redirect back to login page with an error message
-            response.sendRedirect("/JSP/login.jsp?error=Invalid username or password");
-        }
 
+            System.out.println("username " + username + ", password " + password);
+            System.out.println("User in session: " + user.getUsername());
+            System.out.println("User type: " + user.getUserType());
+
+        } else {
+            response.sendRedirect(request.getContextPath() + "/JSP/login.jsp?error=Invalid username or password");
+        }
     }
 }

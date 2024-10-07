@@ -1,4 +1,13 @@
+<%@ page import="model.UserBean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<%
+    UserBean user = (UserBean) session.getAttribute("user");
+
+    if (user == null || user.getUsername() == null) {
+        response.sendRedirect("login.jsp");
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,18 +19,24 @@
 <div class="container">
     <h2>Welcome, ${user.username}!</h2>
     <h3>Your Courses</h3>
-
-    <c:if test="${empty coursesData}">
+<% if (request.getAttribute("course") !=null) {
+    out.println(request.getAttribute("course"));
+} %>
+    <c:if test="${empty course}">
         <p>You are not enrolled in any courses.</p>
     </c:if>
 
-    <c:forEach var="course" items="${coursesData}">
+    <c:forEach var="course" items="${courseData}">
         <div class="course">
             <h4>${course.name}</h4>
             <p><b>Description:</b> ${course.description}</p>
             <p><b>YHP:</b> ${course.yhp}</p>
         </div>
     </c:forEach>
+
+
+ 
+
 </div>
 
 <%@ include file="/JSP/Fragments/footer.jsp" %>

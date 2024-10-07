@@ -1,9 +1,6 @@
 package servlets;
 
-import model.Database;
-import model.Course;
-import model.UserBean;
-import model.UserType;
+import model.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,10 +16,40 @@ import java.util.List;
 public class CoursesServlet extends HttpServlet {
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if(session != null) {
+            Database db = new Database();
+            List<Course> courses =db.getAllCourses();
+            UserBean user = (UserBean) session.getAttribute("user");
+            if(user.getStateType() == StateType.ANONYMOUS || user.getStateType() == StateType.CONFIRMED) {
+
+     /*           String id = req.getParameter("id");
+                String name = req.getParameter("name");
+                String yhp = req.getParameter("yhp");
+                String description = req.getParameter("description");
+
+
+req.getAttribute("id");
+req.getAttribute("name");
+req.getAttribute("yhp");
+req.getAttribute("description");
+*/
+// getServletContext().getRequestDispatcher("/courses.jsp").forward(req, resp);
+                request.setAttribute("courseData",courses );
+                request.getRequestDispatcher("JSP/courses.jsp").forward(request, response);
+                return;
+            }
+        }
+        response.sendRedirect("http://localhost:8080/login");
+    }
+
+/*
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         UserBean user = (UserBean) session.getAttribute("user");
 
         // Check if the user is logged in
@@ -30,10 +57,11 @@ public class CoursesServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
+        Database db = new Database();
+        List<Course> courses =db.getAllCourses();
 
-        List<Course> courses = null;
 
-        Database db;
+
         try {
             // Initialize the Database instance
             db = new Database();
@@ -51,17 +79,14 @@ public class CoursesServlet extends HttpServlet {
             e.printStackTrace();
             response.sendRedirect("error.jsp?message=Error retrieving courses");
             return;
-        }
 
-        System.out.println("Fetching courses for user: " + user.getUsername());
-        courses = db.getAllCourses();
+
+
         // Set courses as a request attribute and forward to the courses.jsp
-        request.setAttribute("coursesData", courses);
+        request.setAttribute("courseData", courses);
+      //  request.getRequestDispatcher("/JSP/Fragments/courseListFragment.jsp").forward(request, response);
         request.getRequestDispatcher("/JSP/courses.jsp").forward(request, response);
-        request.getRequestDispatcher("/JSP/UserPage.jsp").forward(request, response);
-        request.getRequestDispatcher("/JSP/courseListFragment.jsp").forward(request, response);
-
+        System.out.println( request.getAttribute("courseData") );
+    }*/
     }
-}
-
 

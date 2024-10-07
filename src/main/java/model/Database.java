@@ -60,6 +60,7 @@ public class Database {
     public List<Course> getCoursesForStudent(String username) {
         System.out.println("Fetching courses for student: " + username);
         return getCourses(username, "Students", "Students_Courses", "students_id");
+
     }
 
 
@@ -93,9 +94,10 @@ public class Database {
             stmt.setString(1, username);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    courses.add(new Course(rs.getString("name"), rs.getInt("yhp"), rs.getString("description")));
+                    courses.add(new Course(rs.getInt("id") ,rs.getString("name"), rs.getInt("yhp"), rs.getString("description")));
                 }
             }
+            System.out.println("Fetched " + courses.size() + " courses for student: " + username);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -111,7 +113,11 @@ public class Database {
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                courses.add(new Course(rs.getString("name"),rs.getInt("yhp"), rs.getString("description")));
+                courses.add(new Course(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getInt("yhp"),
+                        rs.getString("description")));
             }
         } catch (SQLException e) {
             e.printStackTrace();

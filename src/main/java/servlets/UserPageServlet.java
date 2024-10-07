@@ -22,8 +22,9 @@ public class UserPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         UserBean user = (UserBean) session.getAttribute("user");
+
 
         // If user is not logged in or is anonymous, redirect to login page
         if (user == null || user.getUsername() == null || user.getStateType() != StateType.CONFIRMED) {
@@ -31,7 +32,7 @@ public class UserPageServlet extends HttpServlet {
             return;
         }
 
-        List<Course> courses = null;
+        List<Course> courses;
         try {
             // Initialize the Database instance
             Database db = new Database();
@@ -58,8 +59,9 @@ public class UserPageServlet extends HttpServlet {
             return;
         }
 
-        // Set the courses as an attribute and forward to the UserPage.jsp
-        request.setAttribute("coursesData", courses);
-        request.getRequestDispatcher("/JSP/UserPage.jsp").forward(request, response);
+        // Set the courses as an attribute and forward to the userPage.jsp
+        request.setAttribute("course", courses);
+        request.getRequestDispatcher("/JSP/userPage.jsp").forward(request, response);
+        request.getRequestDispatcher("/JSP/courses.jsp").forward(request, response);
     }
 }

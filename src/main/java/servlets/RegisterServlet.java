@@ -1,3 +1,4 @@
+/*
 package servlets;
 
 import model.Database;
@@ -18,28 +19,24 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Retrieve form parameters
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String userTypeParam = request.getParameter("userType");
 
         try {
-            // Convert userTypeParam to an enum (validate against the UserType enum)
             UserType userType = UserType.valueOf(userTypeParam.toUpperCase());
 
-            // Create a new UserBean object
+
             UserBean newUser = new UserBean();
             newUser.setUsername(username);
             newUser.setPassword(password);  // In production, hash the password before saving it
             newUser.setUserType(userType);
 
-            // Initialize the Database instance (no need to pass a Connection from ServletContext)
             Database db = new Database();
 
-            // Add the new user to the database
             boolean success = db.addUser(newUser);  // Ensure addUser method exists in Database
 
-            // Redirect based on the success of the registration
             if (success) {
                 response.sendRedirect("login.jsp");  // Redirect to login if registration is successful
             } else {
@@ -47,12 +44,11 @@ public class RegisterServlet extends HttpServlet {
             }
 
         } catch (IllegalArgumentException e) {
-            // Handle invalid userType
             response.sendRedirect("register.jsp?error=Invalid user type");
         } catch (Exception e) {
-            // Handle any other exceptions
             e.printStackTrace();
             response.sendRedirect("register.jsp?error=Registration failed");
         }
     }
 }
+*/

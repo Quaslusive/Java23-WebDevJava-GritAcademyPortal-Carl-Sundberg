@@ -1,12 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="navbar">
-    <a href="${pageContext.request.contextPath}/index.jsp">Home</a>
-    <a href="JSP/courses.jsp">Courses</a>
+    <a href="${pageContext.request.contextPath}/index.html">Home</a>
+    <a href="${pageContext.request.contextPath}/JSP/courses.jsp">Courses</a>
     <% if (session.getAttribute("username") == null) { %>
-    <a href="JSP/login.jsp">Login</a>
+    <a href="${pageContext.request.contextPath}/JSP/login.jsp">Login</a>
     <% } else { %>
-    <a href="UserPage.jsp">Dashboard</a>
-    <a href="logout.jsp">Logout</a>
+    <a href="${pageContext.request.contextPath}/JSP/userPage.jsp">Dashboard</a>
+    <a href="../logout.jsp">Logout</a>
+    <a href="http://localhost:8080/Logout">Logout</a>
     <% } %>
 </div>
 

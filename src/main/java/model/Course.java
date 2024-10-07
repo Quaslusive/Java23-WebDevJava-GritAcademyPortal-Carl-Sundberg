@@ -13,13 +13,13 @@ public class Course {
         this.yhp = yhp;
         this.description = description;
     }
-
+/*
     // Constructor without id (useful if id is auto-generated)
     public Course(String name, int yhp, String description) {
         this.name = name;
         this.yhp = yhp;
         this.description = description;
-    }
+    }*/
 
     // Getters and Setters
     public int getId() {

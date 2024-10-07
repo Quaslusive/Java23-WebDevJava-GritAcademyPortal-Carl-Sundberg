@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Gamingcalle_Mark-3
-  Date: 2024-08-23
-  Time: 14:51
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="model.Student, model.Course" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -18,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
-<jsp:include page="navbar.jsp" />
+<jsp:include page="Fragments/navbar.jsp" />
 
 <h2>Enroll Student in Course</h2>
 

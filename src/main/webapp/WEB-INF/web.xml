@@ -13,12 +13,6 @@
 
 
 
-
-    <display-name>My Web Application</display-name>
-
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
 <!--
     &lt;!&ndash; RegisterServlet &ndash;&gt;
     <servlet>
