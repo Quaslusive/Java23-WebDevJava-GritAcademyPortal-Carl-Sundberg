@@ -1,6 +1,10 @@
 package servlets;
 
-import model.*;
+
+import model.Course;
+import model.Database;
+import model.UserBean;
+import model.UserType;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,38 +15,21 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-
 @WebServlet(name = "coursesServlet", urlPatterns = "/courses")
 public class CoursesServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        if(session != null) {
-            Database db = new Database();
-            List<Course> courses =db.getAllCourses();
-            UserBean user = (UserBean) session.getAttribute("user");
-            if(user.getStateType() == StateType.ANONYMOUS || user.getStateType() == StateType.CONFIRMED) {
+        Database db = new Database();
+        UserBean user = (UserBean) session.getAttribute("user");
 
-     /*           String id = req.getParameter("id");
-                String name = req.getParameter("name");
-                String yhp = req.getParameter("yhp");
-                String description = req.getParameter("description");
-
-
-req.getAttribute("id");
-req.getAttribute("name");
-req.getAttribute("yhp");
-req.getAttribute("description");
-*/
-// getServletContext().getRequestDispatcher("/courses.jsp").forward(req, resp);
-                request.setAttribute("courseData",courses );
-                request.getRequestDispatcher("JSP/courses.jsp").forward(request, response);
-                return;
-            }
-        }
-        response.sendRedirect("http://localhost:8080/login");
+        System.out.println("User type is: " + user.getUserType());
+        request.setAttribute("courseData", db.getAllCourses());
+        request.getRequestDispatcher("JSP/courses.jsp").forward(request, response);
     }
+
 
 /*
     @Override
@@ -79,7 +66,6 @@ req.getAttribute("description");
             e.printStackTrace();
             response.sendRedirect("error.jsp?message=Error retrieving courses");
             return;
-
 
 
         // Set courses as a request attribute and forward to the courses.jsp

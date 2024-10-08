@@ -1,25 +1,14 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="navbar">
-    <a href="${pageContext.request.contextPath}/index.html">Home</a>
-    <a href="${pageContext.request.contextPath}/JSP/courses.jsp">Courses</a>
-    <% if (session.getAttribute("username") == null) { %>
-    <a href="${pageContext.request.contextPath}/JSP/login.jsp">Login</a>
-    <% } else { %>
-    <a href="${pageContext.request.contextPath}/JSP/userPage.jsp">Dashboard</a>
-    <a href="../logout.jsp">Logout</a>
-    <a href="http://localhost:8080/Logout">Logout</a>
-    <% } %>
-</div>
 
+<nav class="navbar">
 
+        <a href="${pageContext.request.contextPath}/index.html">Home</a>
+        <a href="${pageContext.request.contextPath}/courses">Courses</a>
+        <a href="${pageContext.request.contextPath}/userPage">User Page</a>
+        <c:if test="${not empty user}">
+            <a href="${pageContext.request.contextPath}/logout">Logout</a>
+        </c:if>
 
-
-
-
-
-
-
-
+</nav>
 
 
 
@@ -85,3 +74,4 @@
 </body>
 </html>
 --%>
+

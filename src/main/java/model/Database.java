@@ -17,13 +17,12 @@ public class Database {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            // Consider re-throwing as a RuntimeException
         }
 
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    // Simplified method to find user by username
+
     public UserBean findUserByUsername(String username) {
         UserBean user = findUser(username, "Students", UserType.STUDENT);
         if (user == null) {
@@ -52,21 +51,20 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return user;
     }
 
 
     public List<Course> getCoursesForStudent(String username) {
         System.out.println("Fetching courses for student: " + username);
-        return getCourses(username, "Students", "Students_Courses", "students_id");
+        return getCourses(username, "students", "students_courses", "students_id");
 
     }
 
 
     public List<Course> getCoursesForTeacher(String username) {
         System.out.println("Fetching courses for teacher: " + username);
-        return getCourses(username, "Teachers", "Teachers_Courses", "teachers_id");
+        return getCourses(username, "teachers", "teachers_courses", "teachers_id");
     }
 
 
@@ -118,6 +116,7 @@ public class Database {
                         rs.getString("name"),
                         rs.getInt("yhp"),
                         rs.getString("description")));
+
             }
         } catch (SQLException e) {
             e.printStackTrace();

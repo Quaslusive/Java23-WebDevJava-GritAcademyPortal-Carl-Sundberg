@@ -34,15 +34,13 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        // Fetch the user from the database
+
         UserBean user = db.findUserByUsername(username);
 
         if (user != null && password.equals(user.getPassword())) {
-            // Create a session and store the user object in the session
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 
-            // Determine the user type and redirect accordingly
             if (user.getUserType() == UserType.TEACHER) {
                 response.sendRedirect(request.getContextPath() + "/JSP/userPage.jsp");
             } else if (user.getUserType() == UserType.STUDENT) {

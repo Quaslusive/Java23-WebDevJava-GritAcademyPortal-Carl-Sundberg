@@ -1,11 +1,12 @@
 package servlets;
 
 import model.Course;
+import model.Teacher;
+import model.Student;
 import model.Database;
 import model.UserBean;
 import model.UserType;
 import model.PrivilegeType;
-import model.StateType;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,52 +17,51 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "userPageServlet", urlPatterns = "/userpage")
+import static model.PrivilegeType.*;
+
+@WebServlet(name = "userPageServlet", urlPatterns = "/userPage")
 public class UserPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        UserBean user = (UserBean) session.getAttribute("user");
-
-
-        // If user is not logged in or is anonymous, redirect to login page
-        if (user == null || user.getUsername() == null || user.getStateType() != StateType.CONFIRMED) {
+        HttpSession session = request.getSession(false);  // Använd sessionen, skapa inte en ny om den inte finns
+        if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect("login.jsp");
             return;
         }
+        UserBean user = (UserBean) session.getAttribute("user");
 
-        List<Course> courses;
         try {
-            // Initialize the Database instance
             Database db = new Database();
 
-            // Fetch courses based on user type and privilege type
-            if (user.getUserType() == UserType.STUDENT && user.getPrivilegeType() == PrivilegeType.USER) {
-                // Student can only view their enrolled courses
-                courses = db.getCoursesForStudent(user.getUsername());
+            if (user.getUserType() == UserType.STUDENT && user.getPrivilegeType() == USER) {
+                db.getCoursesForStudent(user.getUsername());
+                request.setAttribute("userType", "student");
+                request.setAttribute("studentCourses", db.getCoursesForStudent(user.getUsername()));
+                request.getRequestDispatcher("/JSP/studentPage.jsp").forward(request, response);
 
-            } else if (user.getUserType() == UserType.TEACHER && user.getPrivilegeType() == PrivilegeType.USER) {
-                // Teacher with "USER" privilege can view only the courses they teach
-                courses = db.getCoursesForTeacher(user.getUsername());
+            } else if (user.getUserType() == UserType.TEACHER && user.getPrivilegeType() == USER) {
+                db.getCoursesForTeacher(user.getUsername());
+                request.setAttribute("userType", "teacher");
+                request.setAttribute("teacherCourses", db.getCoursesForTeacher(user.getUsername()));
+                request.getRequestDispatcher("/JSP/teacherPage.jsp").forward(request, response);
 
-            } else if (user.getUserType() == UserType.TEACHER && user.getPrivilegeType() == PrivilegeType.ADMIN) {
-                // Admin teacher can view all courses
-                courses = db.getAllCourses();
+         /*   } else if (user.getUserType() == UserType.TEACHER && user.getPrivilegeType() == ADMIN) {
+                db.getAllCourses();
+                request.setAttribute("userType", "admin");
+                request.setAttribute("courseData", db.getAllCourses());
+                request.getRequestDispatcher("/JSP/adminPage.jsp").forward(request, response);
+
+          */
             } else {
-                throw new ServletException("Unknown user type or privilege type.");
+                request.setAttribute("error", "Unknown user type or privilege type.");
+                request.getRequestDispatcher("/JSP/login.jsp").forward(request, response);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("error.jsp?message=Error retrieving courses");
-            return;
+            request.getRequestDispatcher("error.jsp?message=Error retrieving courses").forward(request, response);
         }
-
-        // Set the courses as an attribute and forward to the userPage.jsp
-        request.setAttribute("course", courses);
-        request.getRequestDispatcher("/JSP/userPage.jsp").forward(request, response);
-        request.getRequestDispatcher("/JSP/courses.jsp").forward(request, response);
     }
 }
