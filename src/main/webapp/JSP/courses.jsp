@@ -9,13 +9,15 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<jsp:include page="Fragments/navbar.jsp" />
 <c:choose>
     <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'TEACHER'}">
-        <%@include file="Fragments/navBarTeacher.jsp"%>
+        <%@include file="Fragments/navBarTeacherInclude.jsp"%>
     </c:when>
     <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'STUDENT'}">
-        <%@include file="Fragments/navBarStudent.jsp"%>
+        <%@include file="Fragments/navBarStudentInclude.jsp"%>
+    </c:when>
+    <c:when test="${sessionScope.user != null && sessionScope.user.stateType == 'ANONYMOUS'}">
+        <%@include file="Fragments/navBarGuestInclude.jsp"%>
     </c:when>
 </c:choose>
 
@@ -26,6 +28,6 @@
 </div>
 
 
-<%@ include file="/JSP/Fragments/footer.jsp" %>
+<%@ include file="/JSP/Fragments/footerInclude.jsp" %>
 </body>
 </html>

@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<%@ include file="/JSP/Fragments/navbar.jsp" %>
 
 <div class="container">
     <h2>Welcome, ${user.username}! (Admin)</h2>
@@ -32,6 +31,6 @@
 
 </div>
 
-<%@ include file="/JSP/Fragments/footer.jsp" %>
+<%@ include file="/JSP/Fragments/footerInclude.jsp" %>
 </body>
 </html>

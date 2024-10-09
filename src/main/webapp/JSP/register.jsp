@@ -29,6 +29,6 @@
     <p style="color:red;"><%= request.getParameter("error") %></p>
 </div>
 
-<%@ include file="/JSP/Fragments/footer.jsp" %>
+<%@ include file="/JSP/Fragments/footerInclude.jsp" %>
 </body>
 </html>

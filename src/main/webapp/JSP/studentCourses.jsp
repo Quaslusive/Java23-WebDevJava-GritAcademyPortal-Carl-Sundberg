@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<%@ include file="/JSP/Fragments/navbar.jsp" %>
+<%@ include file="/JSP/Fragments/navbarDefaultInclude.jsp" %>
 
 <div class="container">
     <h2>Courses for Student: ${student.username}</h2>
@@ -23,6 +23,6 @@
     </c:forEach>
 </div>
 
-<%@ include file="/JSP/Fragments/footer.jsp" %>
+<%@ include file="/JSP/Fragments/footerInclude.jsp" %>
 </body>
 </html>

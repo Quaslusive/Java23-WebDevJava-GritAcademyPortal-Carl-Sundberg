@@ -8,11 +8,28 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<%@ include file="/JSP/Fragments/navbar.jsp" %>
 
+<c:choose>
+    <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'TEACHER'}">
+        <%@include file="Fragments/navBarTeacherInclude.jsp"%>
+    </c:when>
+    <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'STUDENT'}">
+        <%@include file="Fragments/navBarStudentInclude.jsp"%>
+    </c:when>
+    <c:when test="${sessionScope.user != null && sessionScope.user.stateType == 'ANONYMOUS'}">
+        <%@include file="Fragments/navBarGuestInclude.jsp"%>
+    </c:when>
+</c:choose>
 
 <div class="container">
-    <h2>Welcome, ${user.username}!</h2>
+    <c:choose>
+        <c:when test="${user.stateType == 'ANONYMOUS'}">
+            <p>Welcome, Guest!</p>
+        </c:when>
+        <c:when test="${user.stateType == 'CONFIRMED'}">
+            <p>Welcome, ${user.username}!</p>
+        </c:when>
+    </c:choose>
     <h3>Your Courses</h3>
 <% if (request.getAttribute("courseData") !=null) {
     out.println(request.getAttribute("courseData"));
@@ -37,6 +54,6 @@
 
 </div>
 
-<%@ include file="/JSP/Fragments/footer.jsp" %>
+<%@ include file="/JSP/Fragments/footerInclude.jsp" %>
 </body>
 </html>

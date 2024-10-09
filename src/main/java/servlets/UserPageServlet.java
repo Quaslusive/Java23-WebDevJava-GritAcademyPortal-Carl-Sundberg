@@ -55,7 +55,7 @@ public class UserPageServlet extends HttpServlet {
 
           */
             } else {
-                request.setAttribute("error", "Unknown user type or privilege type.");
+                request.setAttribute("error", "Guest are not allowed to peep on others stuff.");
                 request.getRequestDispatcher("/JSP/login.jsp").forward(request, response);
             }
 

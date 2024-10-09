@@ -11,7 +11,18 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<jsp:include page="Fragments/navbar.jsp" />
+<c:choose>
+    <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'TEACHER'}">
+        <%@include file="Fragments/navBarTeacherInclude.jsp"%>
+    </c:when>
+
+<%--
+    <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'ADMIN'}">
+        <%@include file="Fragments/navBarAdmintInclude.jsp"%>
+    </c:when>
+--%>
+
+</c:choose>
 
 <h2>Assign Teacher to Course</h2>
 
@@ -33,7 +44,7 @@
     <input type="submit" value="Assign">
 </form>
 
-<jsp:include page="Fragments/footer.jsp" />
+<jsp:include page="Fragments/footerInclude.jsp" />
 </body>
 </html>
 

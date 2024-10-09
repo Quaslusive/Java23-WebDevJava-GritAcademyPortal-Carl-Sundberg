@@ -7,7 +7,6 @@
     <table class="table">
         <thead>
         <tr>
-
             <th>Course Name</th>
             <th>YHP</th>
             <th>Description</th>
@@ -15,7 +14,6 @@
         </thead>
         <tbody>
         <tr>
-
             <td>${course.name}</td>
             <td>${course.yhp}</td>
             <td>${course.description}</td>

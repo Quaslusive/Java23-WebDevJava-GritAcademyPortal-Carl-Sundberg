@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
-<jsp:include page="Fragments/navbar.jsp" />
+<jsp:include page="Fragments/navbarDefaultInclude.jsp" />
 
 <h2>Enroll Student in Course</h2>
 
@@ -33,6 +33,6 @@
     <input type="submit" value="Enroll">
 </form>
 
-<jsp:include page="Fragments/footer.jsp" />
+<jsp:include page="Fragments/footerInclude.jsp" />
 </body>
 </html>
