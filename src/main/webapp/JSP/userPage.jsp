@@ -24,33 +24,22 @@
 <div class="container">
     <c:choose>
         <c:when test="${user.stateType == 'ANONYMOUS'}">
-            <p>Welcome, Guest!</p>
+            <h2>Welcome, Guest!</h2>
+            <p>You are logged in as a guest. To access more features, please log in with a registered account.</p>
         </c:when>
         <c:when test="${user.stateType == 'CONFIRMED'}">
-            <p>Welcome, ${user.username}!</p>
+            <h2>Welcome, ${user.username}!</h2>
         </c:when>
     </c:choose>
-    <h3>Your Courses</h3>
-<% if (request.getAttribute("courseData") !=null) {
-    out.println(request.getAttribute("courseData"));
-} %>
-    <c:if test="${empty coursesData}">
-        <p>You are not enrolled in any courses.</p>
-    </c:if>
 
-    <c:forEach var="course" items="${coursesData}">
-        <table>
-            <tr>
-                <th>Course Name</th>
-                <th>Description</th>
-            </tr>
-            <tr>
-                <td>${course.name}</td>
-                <td>${course.description}</td>
-            </tr>
-        </table>
-    </c:forEach>
-
+    <c:choose>
+        <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'STUDENT'}">
+            <%@ include file="studentUserPage.jsp" %>
+        </c:when>
+        <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'TEACHER'}">
+            <%@ include file="teacherUserPage.jsp" %>
+        </c:when>
+    </c:choose>
 
 </div>
 

@@ -5,23 +5,18 @@ public class Course {
     private String name;
     private int yhp;
     private String description;
+   // private String teacherName;
 
-    // Constructor with all parameters including id
+
     public Course(int id, String name, int yhp, String description) {
         this.id = id;
         this.name = name;
         this.yhp = yhp;
         this.description = description;
+     //   this.teacherName = teacherName;
     }
-/*
-    // Constructor without id (useful if id is auto-generated)
-    public Course(String name, int yhp, String description) {
-        this.name = name;
-        this.yhp = yhp;
-        this.description = description;
-    }*/
 
-    // Getters and Setters
+
     public int getId() {
         return id;
     }
@@ -53,4 +48,15 @@ public class Course {
     public void setDescription(String description) {
         this.description = description;
     }
+/*
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+*/
+
 }
