@@ -6,12 +6,10 @@ import java.util.List;
 
 public class Database {
 
-    // JDBC URL, username, and password for MySQL database
     private static final String URL = "jdbc:mysql://localhost:3306/gritacademyportal";
     private static final String USER = "root";
     private static final String PASSWORD = "";
 
-    // Method to get a database connection
     public static Connection getConnection() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -42,7 +40,7 @@ public class Database {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     user = new UserBean();
-                    user.setId(rs.getInt("id")); // Set the user's ID from the database
+                    user.setId(rs.getInt("id"));
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
                     user.setUserType(userType);
@@ -53,7 +51,7 @@ public class Database {
         }
         return user;
     }
-
+/*
 
     public List<Course> getCoursesForStudent(String username) {
         System.out.println("Fetching courses for student: " + username);
@@ -61,23 +59,13 @@ public class Database {
 
     }
 
-
     public List<Course> getCoursesForTeacher(String username) {
         System.out.println("Fetching courses for teacher: " + username);
         return getCourses(username, "teachers", "teachers_courses", "teachers_id");
     }
-
+*/
 
 /*
-
-    public List<Course> getCoursesForStudent(String username) {
-        return getCourses(username, "Students", "Students_Courses", "students_id");
-    }
-
-    public List<Course> getCoursesForTeacher(String username) {
-        return getCourses(username, "Teachers", "Teachers_Courses", "teachers_id");
-    }
-*/
 
     private List<Course> getCourses(String username, String userTable, String courseTable, String userIdColumn) {
         List<Course> courses = new ArrayList<>();
@@ -92,7 +80,11 @@ public class Database {
             stmt.setString(1, username);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    courses.add(new Course(rs.getInt("id") ,rs.getString("name"), rs.getInt("yhp"), rs.getString("description")));
+                    courses.add(new Course(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getInt("yhp"),
+                            rs.getString("description")));
                 }
             }
             System.out.println("Fetched " + courses.size() + " courses for student: " + username);
@@ -101,6 +93,7 @@ public class Database {
         }
         return courses;
     }
+*/
 
     public List<Course> getAllCourses() {
         List<Course> courses = new ArrayList<>();
@@ -126,6 +119,60 @@ public class Database {
         return courses;
     }
 
+    public List<Student> getAllStudents() {
+        List<Student> student = new ArrayList<>();
+        String query = "SELECT * FROM Students";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                student.add(new Student(
+                        rs.getInt("id"),
+                        rs.getString("fName"),
+                        rs.getString("lName"),
+                        rs.getString("town"),
+                        rs.getString("email"),
+                        rs.getString("phone")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Number of student fetched: " + student.size());
+
+        return student;
+    }
+
+    public List<Teacher> getAllTeacher() {
+        List<Teacher> teacher = new ArrayList<>();
+        String query = "SELECT * FROM Teachers";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                teacher.add(new Teacher(
+                        rs.getInt("id"),
+                        rs.getString("fName"),
+                        rs.getString("lName"),
+                        rs.getString("town"),
+                        rs.getString("email"),
+                        rs.getString("phone")));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Number of student fetched: " + teacher.size());
+
+        return teacher;
+    }
+}
+/*
+
     public void registerTeacher(String fName, String lName, String town, String email, String phone, String username, String password, String privilegeType) {
         String query = "INSERT INTO Teachers (fName, lName, town, email, phone, username, password, privilege_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -146,6 +193,9 @@ public class Database {
             e.printStackTrace();
         }
     }
+*/
+
+/*
 
     public void registerStudent(String fName, String lName, String town, String email, String phone, String username, String password) {
         String query = "INSERT INTO Students (fName, lName, town, email, phone, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -166,6 +216,9 @@ public class Database {
             e.printStackTrace();
         }
     }
+*/
+
+/*
 
     public boolean assignTeacherToCourse(int teacherId, int courseId) {
         return assignToCourse("Teachers_Courses", "teachers_id", teacherId, courseId);
@@ -174,6 +227,7 @@ public class Database {
     public boolean enrollStudentInCourse(int studentId, int courseId) {
         return assignToCourse("Students_Courses", "students_id", studentId, courseId);
     }
+
 
     private boolean assignToCourse(String tableName, String userIdColumn, int userId, int courseId) {
         String query = "INSERT INTO " + tableName + " (" + userIdColumn + ", courses_id) VALUES (?, ?)";
@@ -191,22 +245,26 @@ public class Database {
             return false;
         }
     }
-/*public boolean addUser(UserBean user) {
-    String query = "INSERT INTO Users (username, password, user_type) VALUES (?, ?, ?)";
-
-    try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
-        stmt.setString(1, user.getUsername());
-        stmt.setString(2, user.getPassword());  // In production, hash the password!
-        stmt.setString(3, user.getUserType().name());
-
-        int rowsAffected = stmt.executeUpdate();
-        return rowsAffected > 0;  // Return true if the user was successfully added
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
-    }
-}
 */
+    /*public boolean addUser(UserBean user) {
+        String query = "INSERT INTO Users (username, password, user_type) VALUES (?, ?, ?)";
+
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());  // In production, hash the password!
+            stmt.setString(3, user.getUserType().name());
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;  // Return true if the user was successfully added
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    */
+
+/*
+
     public boolean addUser(UserBean user) {
         String query;
         if (user.getUserType() == UserType.STUDENT) {
@@ -235,6 +293,69 @@ public class Database {
             return false;
         }
     }
+*/
+/*
 
-    // No need for explicit close method since we're using try-with-resources
+    public List<Course> getCoursesForStudent(String username) {
+        String query = "SELECT c.id, c.name, c.yhp, c.description, t.fName AS teacherName " +
+                "FROM courses c " +
+                "JOIN students_courses sc ON c.id = sc.courses_id " +
+                "JOIN students s ON sc.students_id = s.id " +
+                "JOIN teachers_courses tc ON c.id = tc.courses_id " +
+                "JOIN teachers t ON tc.teachers_id = t.id " +
+                "WHERE s.username = ?";
+        List<Course> courses = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Course course = new Course(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getInt("yhp"),
+                            rs.getString("description"),
+                            rs.getString("teacherName")
+                    );
+                    courses.add(course);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
+    public List<Course> getCoursesForTeacher(String username) {
+        String query = "SELECT c.id, c.name, c.yhp, c.description, s.fName AS studentName " +
+                "FROM courses c " +
+                "JOIN teachers_courses tc ON c.id = tc.courses_id " +
+                "JOIN teachers t ON tc.teachers_id = t.id " +
+                "JOIN students_courses sc ON c.id = sc.courses_id " +
+                "JOIN students s ON sc.students_id = s.id " +
+                "WHERE t.username = ?";
+        List<Course> courses = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Course course = new Course(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getInt("yhp"),
+                            rs.getString("description"),
+                            rs.getString("studentName")
+                    );
+                    courses.add(course);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
 }
+*/
+
+

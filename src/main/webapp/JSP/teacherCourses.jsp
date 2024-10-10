@@ -11,7 +11,7 @@
 <%@ include file="/JSP/Fragments/navbarDefaultInclude.jsp" %>
 
 <div class="container">
-    <h2>Courses for Teacher: ${teacher.username}</h2>
+    <h2>Courses for Teacher: ${teacher.fname} ${teacher.lname}</h2>
     <c:if test="${empty teacherCourses}">
         <p>This teacher is not assigned to any courses.</p>
     </c:if>

@@ -65,7 +65,6 @@ public class LoginServlet extends HttpServlet {
             System.out.println("User type: " + user.getUserType());
 
         } else {
-            // Felaktigt användarnamn eller lösenord
             response.sendRedirect(request.getContextPath() + "/JSP/login.jsp?error=Invalid username or password");
         }
     }

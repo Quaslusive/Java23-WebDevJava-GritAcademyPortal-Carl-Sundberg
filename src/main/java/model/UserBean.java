@@ -8,7 +8,7 @@ public class UserBean implements Serializable {
     private UserType userType;
     private StateType stateType;
     private String password;
-    private PrivilegeType privilegeType; // Om du vill inkludera lösenordet
+    private PrivilegeType privilegeType;
 
     public UserBean() {
 
