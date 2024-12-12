@@ -25,7 +25,6 @@ public class UserPageServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
 
-        // Check for a valid session and user
         if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect("login.jsp");
             return;
@@ -35,7 +34,7 @@ public class UserPageServlet extends HttpServlet {
         Database db = new Database();
 
         try {
-            // Handle user-specific actions
+
             switch (user.getUserType()) {
                 case STUDENT:
                     if (user.getPrivilegeType() == PrivilegeType.USER) {
