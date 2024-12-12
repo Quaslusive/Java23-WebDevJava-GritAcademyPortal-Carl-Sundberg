@@ -31,7 +31,10 @@ public class Database {
 
     private UserBean findUser(String username, String tableName, UserType userType) {
         UserBean user = null;
+        String query = "SELECT id, username, password, fName, lName FROM " + tableName + " WHERE username = ?";
+/*
         String query = "SELECT * FROM " + tableName + " WHERE username = ?";
+*/
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -43,7 +46,13 @@ public class Database {
                     user.setId(rs.getInt("id"));
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
+
+                    user.setFname(rs.getString("fName")); // Setting fName
+                    user.setLname(rs.getString("lName")); // Setting lName
+
                     user.setUserType(userType);
+
+
                 }
             }
         } catch (SQLException e) {
@@ -51,49 +60,6 @@ public class Database {
         }
         return user;
     }
-/*
-
-    public List<Course> getCoursesForStudent(String username) {
-        System.out.println("Fetching courses for student: " + username);
-        return getCourses(username, "students", "students_courses", "students_id");
-
-    }
-
-    public List<Course> getCoursesForTeacher(String username) {
-        System.out.println("Fetching courses for teacher: " + username);
-        return getCourses(username, "teachers", "teachers_courses", "teachers_id");
-    }
-*/
-
-/*
-
-    private List<Course> getCourses(String username, String userTable, String courseTable, String userIdColumn) {
-        List<Course> courses = new ArrayList<>();
-        String query = "SELECT c.name, c.description FROM Courses c " +
-                "JOIN " + courseTable + " uc ON c.id = uc.courses_id " +
-                "JOIN " + userTable + " u ON uc." + userIdColumn + " = u.id " +
-                "WHERE u.username = ?";
-
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, username);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    courses.add(new Course(
-                            rs.getInt("id"),
-                            rs.getString("name"),
-                            rs.getInt("yhp"),
-                            rs.getString("description")));
-                }
-            }
-            System.out.println("Fetched " + courses.size() + " courses for student: " + username);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return courses;
-    }
-*/
 
     public List<Course> getAllCourses() {
         List<Course> courses = new ArrayList<>();
@@ -170,7 +136,123 @@ public class Database {
 
         return teacher;
     }
+
+
+    public List<Course> getCoursesForStudent(String username) {
+        String query = "SELECT c.id, c.name, c.yhp, c.description, t.fName AS teacherName " +
+                "FROM courses c " +
+                "JOIN students_courses sc ON c.id = sc.courses_id " +
+                "JOIN students s ON sc.students_id = s.id " +
+                "JOIN teachers_courses tc ON c.id = tc.courses_id " +
+                "JOIN teachers t ON tc.teachers_id = t.id " +
+                "WHERE s.username = ?";
+        List<Course> courses = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Course course = new Course(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getInt("yhp"),
+                            rs.getString("description"),
+                            rs.getString("teacherName")
+                    );
+                    courses.add(course);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
+    public List<Course> getCoursesForTeacher(String username) {
+        String query = "SELECT c.id, c.name, c.yhp, c.description, s.fName AS studentName " +
+                "FROM courses c " +
+                "JOIN teachers_courses tc ON c.id = tc.courses_id " +
+                "JOIN teachers t ON tc.teachers_id = t.id " +
+                "JOIN students_courses sc ON c.id = sc.courses_id " +
+                "JOIN students s ON sc.students_id = s.id " +
+                "WHERE t.username = ?";
+        List<Course> courses = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Course course = new Course(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getInt("yhp"),
+                            rs.getString("description"),
+                            rs.getString("studentName")
+                    );
+                    courses.add(course);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
+
+
 }
+
+
+
+/*
+
+    public List<Course> getCoursesForStudent(String username) {
+        System.out.println("Fetching courses for student: " + username);
+        return getCourses(username, "students", "students_courses", "students_id");
+
+    }
+
+    public List<Course> getCoursesForTeacher(String username) {
+        System.out.println("Fetching courses for teacher: " + username);
+        return getCourses(username, "teachers", "teachers_courses", "teachers_id");
+    }
+*/
+
+/*
+
+    private List<Course> getCourses(String username, String userTable, String courseTable, String userIdColumn) {
+        List<Course> courses = new ArrayList<>();
+        String query = "SELECT c.name, c.description FROM Courses c " +
+                "JOIN " + courseTable + " uc ON c.id = uc.courses_id " +
+                "JOIN " + userTable + " u ON uc." + userIdColumn + " = u.id " +
+                "WHERE u.username = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    courses.add(new Course(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getInt("yhp"),
+                            rs.getString("description")));
+                }
+            }
+            System.out.println("Fetched " + courses.size() + " courses for student: " + username);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+*/
+
+
+
+
+
+
 /*
 
     public void registerTeacher(String fName, String lName, String town, String email, String phone, String username, String password, String privilegeType) {
@@ -296,35 +378,7 @@ public class Database {
 */
 /*
 
-    public List<Course> getCoursesForStudent(String username) {
-        String query = "SELECT c.id, c.name, c.yhp, c.description, t.fName AS teacherName " +
-                "FROM courses c " +
-                "JOIN students_courses sc ON c.id = sc.courses_id " +
-                "JOIN students s ON sc.students_id = s.id " +
-                "JOIN teachers_courses tc ON c.id = tc.courses_id " +
-                "JOIN teachers t ON tc.teachers_id = t.id " +
-                "WHERE s.username = ?";
-        List<Course> courses = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, username);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Course course = new Course(
-                            rs.getInt("id"),
-                            rs.getString("name"),
-                            rs.getInt("yhp"),
-                            rs.getString("description"),
-                            rs.getString("teacherName")
-                    );
-                    courses.add(course);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return courses;
-    }
+
 
     public List<Course> getCoursesForTeacher(String username) {
         String query = "SELECT c.id, c.name, c.yhp, c.description, s.fName AS studentName " +
@@ -357,5 +411,7 @@ public class Database {
     }
 }
 */
+
+
 
 

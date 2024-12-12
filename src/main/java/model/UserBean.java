@@ -3,15 +3,16 @@ package model;
 import java.io.Serializable;
 
 public class UserBean implements Serializable {
-    private int id;  // Add the ID field here
+    private int id;
     private String username;
     private UserType userType;
     private StateType stateType;
     private String password;
     private PrivilegeType privilegeType;
+    private String fname;  // Add first name
+    private String lname;  // Add last name
 
     public UserBean() {
-
     }
 
     // Getter and Setter for 'id'
@@ -58,6 +59,27 @@ public class UserBean implements Serializable {
 
     public PrivilegeType getPrivilegeType() {
         return privilegeType;
+    }
 
+    public void setPrivilegeType(PrivilegeType privilegeType) {
+        this.privilegeType = privilegeType;
+    }
+
+    // Getter and Setter for 'fname'
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    // Getter and Setter for 'lname'
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
     }
 }

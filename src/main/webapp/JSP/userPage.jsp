@@ -34,10 +34,10 @@
 
     <c:choose>
         <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'STUDENT'}">
-            <%@ include file="studentUserPage.jsp" %>
+            <%@ include file="students/studentUserPage.jsp" %>
         </c:when>
         <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'TEACHER'}">
-            <%@ include file="teacherUserPage.jsp" %>
+            <%@ include file="teachers/teacherUserPage.jsp" %>
         </c:when>
     </c:choose>
 

@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<%@ include file="/JSP/Fragments/navbarDefaultInclude.jsp" %>
-
 <div class="container">
     <h2>Courses for Student: ${student.fname}</h2>
     <c:if test="${empty studentCourses}">
