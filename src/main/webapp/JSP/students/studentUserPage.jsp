@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <h2>Courses for Student: ${student.fname}</h2>
+    <h2>Courses for Student: ${user.fname}</h2>
     <c:if test="${empty studentCourses}">
         <p>This student is not enrolled in any courses.</p>
     </c:if>
@@ -48,7 +48,7 @@
     </table>
     </div>
 <div>
-</c:forEach> <form action="${pageContext.request.contextPath}/studentCourses" method="post">
+</c:forEach> <form action="${pageContext.request.contextPath}/userPage" method="post">
     <label for="selectedCourseId">Select a Course:</label>
     <select id="selectedCourseId" name="selectedCourseId">
         <c:forEach var="course" items="${courseData}">

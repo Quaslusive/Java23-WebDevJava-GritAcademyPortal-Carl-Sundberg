@@ -60,6 +60,41 @@ public class Database {
         }
         return user;
     }
+    public List<String> getStudentCourses() {
+        List<String> studentCourses = new ArrayList<>();
+        String query = "SELECT student_id,course_id FROM students_courses" ;
+        //String query = "SELECT id, username FROM teachers";
+
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+
+            while (rs.next()) {
+
+                System.out.println("test");
+      /*          String studentCourseInfo = String.format(
+                        "Student: %s ",
+                        rs.getString("students_id ")
+
+
+                );*/
+               /* String studentCourseInfo = String.format(
+                        "Student: %s ",
+                        rs.getString("IName")
+
+
+                );
+                studentCourses.add(studentCourseInfo);*/
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return studentCourses;
+    }
+
 
     public List<Course> getAllCourses() {
         List<Course> courses = new ArrayList<>();
@@ -157,7 +192,7 @@ public class Database {
                             rs.getString("name"),
                             rs.getInt("yhp"),
                             rs.getString("description"),
-                            rs.getString("teacherName")
+                            rs.getString("teacherName") // ?
                     );
                     courses.add(course);
                 }
@@ -187,7 +222,7 @@ public class Database {
                             rs.getString("name"),
                             rs.getInt("yhp"),
                             rs.getString("description"),
-                            rs.getString("studentName")
+                            rs.getString("studentName") // ?
                     );
                     courses.add(course);
                 }

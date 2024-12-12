@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "userPageServlet", urlPatterns = "/userPage")
+@WebServlet( "/userPage")
 public class UserPageServlet extends HttpServlet {
 
     @Override
@@ -40,19 +40,21 @@ public class UserPageServlet extends HttpServlet {
                     if (user.getPrivilegeType() == PrivilegeType.USER) {
                         List<Course> studentCourses = db.getCoursesForStudent(user.getUsername());
                         request.setAttribute("studentCourses", studentCourses);
-                        request.getRequestDispatcher("/JSP/StudentUserPage.jsp").forward(request, response);
+                        request.getRequestDispatcher("/JSP/UserPage.jsp").forward(request, response);
+
+
                     }
                     break;
 
                 case TEACHER:
                     if (user.getPrivilegeType() == PrivilegeType.USER) {
-                        List<Student> allStudents = db.getAllStudents();
-                        request.setAttribute("allStudents", allStudents);
-                        request.getRequestDispatcher("/JSP/TeacherUserPage.jsp").forward(request, response);
-                    } else if (user.getPrivilegeType() == PrivilegeType.ADMIN) {
+                        List<Course> teacherCourses = db.getCoursesForTeacher(user.getUsername());
+                        request.setAttribute("teacherCourses", teacherCourses);
+                        request.getRequestDispatcher("/JSPUserPage.jsp").forward(request, response);
+                  /*  } else if (user.getPrivilegeType() == PrivilegeType.ADMIN) {
                         List<Course> allCourses = db.getAllCourses();
                         request.setAttribute("allCourses", allCourses);
-                        request.getRequestDispatcher("/JSP/AdminPage.jsp").forward(request, response);
+                        request.getRequestDispatcher("/JSP/AdminPage.jsp").forward(request, response);*/
                     }
                     break;
 

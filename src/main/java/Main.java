@@ -16,6 +16,12 @@ public class Main {
         List<Teacher> teachers = database.getAllTeacher();
         List<Student> students = database.getAllStudents();
 
+        List<String> studentCourses = database.getStudentCourses();
+
+        for (String info : studentCourses) {
+            System.out.println(info);
+        }
+/*
         // Print out each course to the console
         for (Course course : courses) {
             System.out.println("Course ID: " + course.getId());
@@ -42,6 +48,6 @@ public class Main {
             System.out.println("email: " + student.getEmail());
             System.out.println("phone number: " + student.getPhone());
             System.out.println("-------------------------------------");
-        }
+        }*/
     }
 }

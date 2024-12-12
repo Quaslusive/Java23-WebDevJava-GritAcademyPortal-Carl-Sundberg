@@ -10,7 +10,7 @@
 <body>
 
 <div class="container">
-    <h2>Welcome, ${user.username}!</h2>
+    <h2>Welcome, ${user.fname}!</h2>
     <h3>Courses You're Teaching</h3>
 
     <c:if test="${empty teacherCourses}">
