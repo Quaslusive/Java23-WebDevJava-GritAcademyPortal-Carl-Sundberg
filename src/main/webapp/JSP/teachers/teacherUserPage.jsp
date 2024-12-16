@@ -1,5 +1,61 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Page</title>
+</head>
+<body>
+<h1>Welcome, Teacher!</h1>
+
+<h2>Student List</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Student ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="student" items="${allStudents}">
+        <tr>
+            <td>${student.id}</td>
+            <td>${student.fName}</td>
+            <td>${student.lName}</td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
+
+<h2>Student-Course Relationships</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Student</th>
+        <th>Course</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="record" items="${studentCourses}">
+        <tr>
+            <td>${record}</td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
+</body>
+</html>
+
+
+
+
+
+<%--
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,3 +118,4 @@
 <%@ include file="/JSP/Fragments/footerInclude.jsp" %>
 </body>
 </html>
+--%>

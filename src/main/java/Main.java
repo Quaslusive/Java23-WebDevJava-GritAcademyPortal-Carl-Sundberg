@@ -43,5 +43,7 @@ public class Main {
             System.out.println("phone number: " + student.getPhone());
             System.out.println("-------------------------------------");
         }
+      //  System.out.println(database.getStudentsCourses1());
+        System.out.println(database.getStudentsCoursesWithNames());
     }
 }

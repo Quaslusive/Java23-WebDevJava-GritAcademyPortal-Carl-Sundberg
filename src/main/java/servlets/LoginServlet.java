@@ -53,9 +53,17 @@ public class LoginServlet extends HttpServlet {
 
             // Kontrollera user type och omdirigera
             if (user.getUserType() == UserType.TEACHER) {
+                response.sendRedirect(request.getContextPath() + "/JSP/teachers/teachers.jsp");
+
+              //  response.sendRedirect(request.getContextPath() + "/JSP/teachers/teacherUserPage.jsp");
+/*
                 response.sendRedirect(request.getContextPath() + "/JSP/teacherUserPage.jsp");
+*/
+                /*response.sendRedirect(request.getContextPath() + "/JSP/userPage.jsp");*/
+
             } else if (user.getUserType() == UserType.STUDENT) {
-                response.sendRedirect(request.getContextPath() + "/JSP/userPage.jsp");
+              //  response.sendRedirect(request.getContextPath() + "/JSP/students/studentUserPage.jsp");
+                response.sendRedirect(request.getContextPath() + "/JSP/students/students.jsp");
             } else {
                 response.sendRedirect(request.getContextPath() + "/JSP/login.jsp?error=Invalid user type");
             }

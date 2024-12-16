@@ -61,6 +61,59 @@ public class Database {
         return user;
     }
 
+/*
+    public List<String> getStudentsCourses1() {
+        List<String> studentCourses = new ArrayList<>();
+        String query = "SELECT * FROM students_courses";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                int studentId = rs.getInt("students_id");
+                int courseId = rs.getInt("courses_id");
+
+                // Format as a readable string
+                String record = "Student ID: " + studentId + ", Course ID: " + courseId;
+                studentCourses.add(record);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return studentCourses;
+}
+*/
+public List<String> getStudentsCoursesWithNames() {
+        List<String> studentCourses = new ArrayList<>();
+        String query = "SELECT s.fName, s.lName, c.name AS courseName, c.description " +
+                "FROM students_courses sc " +
+                "JOIN students s ON sc.students_id = s.id " +
+                "JOIN courses c ON sc.courses_id = c.id";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                String studentName = rs.getString("fName") + " " + rs.getString("lName");
+                String courseName = rs.getString("courseName");
+                String courseDescription = rs.getString("description");
+
+                // Format as a readable string
+                String record = "Student: " + studentName + ", Course: " + courseName +
+                        " (" + courseDescription + ")";
+                studentCourses.add(record);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+// System.out.println(getStudentsCoursesWithNames());
+        return studentCourses;
+    }
+
+
     public List<Course> getAllCourses() {
         List<Course> courses = new ArrayList<>();
         String query = "SELECT * FROM Courses";
