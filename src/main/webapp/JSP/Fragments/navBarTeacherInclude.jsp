@@ -1,5 +1,4 @@
 <nav class="navbar">
-<p><strong>Teacher</strong></p>
     <a href=${pageContext.request.contextPath}/JSP/teachers/teachers.jsp>| Home |</a>
     <a href=${pageContext.request.contextPath}/courses>| Courses |</a>
     <a href=${pageContext.request.contextPath}/userPage>| User Page |</a>
