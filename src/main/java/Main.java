@@ -1,7 +1,4 @@
-import model.Course;
-import model.Database;
-import model.Student;
-import model.Teacher;
+import model.*;
 
 import java.util.List;
 
@@ -13,8 +10,10 @@ public class Main {
 
         // Get the list of all courses
         List<Course> courses = database.getAllCourses();
-        List<Teacher> teachers = database.getAllTeacher();
+        List<Teacher> teachers = database.getAllTeachers();
         List<Student> students = database.getAllStudents();
+        List<StudentCourseBean> studentCourses = database.getStudentsCoursesWithNames();
+
 
         // Print out each course to the console
         for (Course course : courses) {
@@ -41,6 +40,12 @@ public class Main {
             System.out.println("Town: " + student.getTown());
             System.out.println("email: " + student.getEmail());
             System.out.println("phone number: " + student.getPhone());
+            System.out.println("-------------------------------------");
+        }
+        for (StudentCourseBean studentCourse : studentCourses) {
+            System.out.println("student name " + studentCourse.getStudentName());
+            System.out.println("course name " + studentCourse.getCourseName());
+            System.out.println("Description " + studentCourse.getCourseDescription());
             System.out.println("-------------------------------------");
         }
       //  System.out.println(database.getStudentsCourses1());

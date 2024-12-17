@@ -24,7 +24,7 @@
 
 <div class="container">
     <h2>Available Courses</h2>
-    <%@ include file="Fragments/courseListFragment.jsp" %>
+    <%@ include file="/JSP/Fragments/courseListFragment.jsp" %>
 </div>
 
 

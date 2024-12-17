@@ -9,29 +9,23 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
+<c:choose>
+    <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'TEACHER'}">
+        <%@include file="/JSP/Fragments/navBarTeacherInclude.jsp" %>
+    </c:when>
+    <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'STUDENT'}">
+        <%@include file="/JSP/Fragments/navBarStudentInclude.jsp" %>
+    </c:when>
+    <c:when test="${sessionScope.user != null && sessionScope.user.stateType == 'ANONYMOUS'}">
+        <%@include file="/JSP/Fragments/navBarGuestInclude.jsp" %>
+    </c:when>
+</c:choose>
+
 <div class="container">
-    <h2>All Students and Their Courses</h2>
-
-    <c:if test="${empty studentData}">
-        <p>No students found.</p>
-    </c:if>
-
-    <c:forEach var="student" items="${studentData}">
-        <div class="student-info">
-            <h3>Student: ${student.fname} ${student.lname}</h3>
-            <p>Email: ${student.email}</p>
-            <p>Town: ${student.town}</p>
-
-            <h4>Enrolled Courses:</h4>
-            <ul>
-                <c:forEach var="course" items="${student.courses}">
-                    <li>${course.name} - ${course.description}</li>
-                </c:forEach>
-            </ul>
-        </div>
-        <hr>
-    </c:forEach>
+    <h2>Enrolled students </h2>
+    <%@ include file="/JSP/Fragments/studentCoursesFragment.jsp" %>
 </div>
-<%@ include file="/JSP/Fragments/footerInclude.jsp" %>
+
+    <%@ include file="/JSP/Fragments/footerInclude.jsp" %>
 </body>
 </html>

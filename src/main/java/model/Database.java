@@ -62,8 +62,8 @@ public class Database {
     }
 
 
-public List<String> getStudentsCoursesWithNames() {
-        List<String> studentCourses = new ArrayList<>();
+public List<StudentCourseBean> getStudentsCoursesWithNames() {
+        List<StudentCourseBean> studentCourses = new ArrayList<>();
         String query = "SELECT s.fName, s.lName, c.name AS courseName, c.description " +
                 "FROM students_courses sc " +
                 "JOIN students s ON sc.students_id = s.id " +
@@ -78,10 +78,8 @@ public List<String> getStudentsCoursesWithNames() {
                 String courseName = rs.getString("courseName");
                 String courseDescription = rs.getString("description");
 
-                // Format as a readable string
-                String record = "Student: " + studentName + ", Course: " + courseName +
-                        " (" + courseDescription + ")";
-                studentCourses.add(record);
+                StudentCourseBean studentCourse = new StudentCourseBean(studentName, courseName, courseDescription);
+                studentCourses.add(studentCourse);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -141,7 +139,7 @@ public List<String> getStudentsCoursesWithNames() {
         return student;
     }
 //TODO Do i need this?
-    public List<Teacher> getAllTeacher() {
+    public List<Teacher> getAllTeachers() {
         List<Teacher> teacher = new ArrayList<>();
         String query = "SELECT * FROM Teachers";
 
