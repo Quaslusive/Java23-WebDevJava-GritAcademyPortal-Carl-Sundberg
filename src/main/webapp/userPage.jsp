@@ -1,3 +1,4 @@
+<%--
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
@@ -11,13 +12,13 @@
 
 <c:choose>
     <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'TEACHER'}">
-        <%@include file="Fragments/navBarTeacherInclude.jsp"%>
+        <%@include file="JSP/Fragments/navBarTeacherInclude.jsp"%>
     </c:when>
     <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'STUDENT'}">
-        <%@include file="Fragments/navBarStudentInclude.jsp"%>
+        <%@include file="JSP/Fragments/navBarStudentInclude.jsp"%>
     </c:when>
     <c:when test="${sessionScope.user != null && sessionScope.user.stateType == 'ANONYMOUS'}">
-        <%@include file="Fragments/navBarGuestInclude.jsp"%>
+        <%@include file="JSP/Fragments/navBarGuestInclude.jsp"%>
     </c:when>
 </c:choose>
 
@@ -34,10 +35,10 @@
 
     <c:choose>
         <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'STUDENT'}">
-            <%@ include file="students/studentUserPage.jsp" %>
+            <%@ include file="JSP/students/studentUserPage.jsp" %>
         </c:when>
         <c:when test="${sessionScope.user != null && sessionScope.user.userType == 'TEACHER'}">
-            <%@ include file="teachers/teacherUserPage.jsp" %>
+            <%@ include file="JSP/teachers/teacherUserPage.jsp" %>
         </c:when>
     </c:choose>
 
@@ -46,3 +47,4 @@
 <%@ include file="/JSP/Fragments/footerInclude.jsp" %>
 </body>
 </html>
+--%>
