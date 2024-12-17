@@ -61,30 +61,7 @@ public class Database {
         return user;
     }
 
-/*
-    public List<String> getStudentsCourses1() {
-        List<String> studentCourses = new ArrayList<>();
-        String query = "SELECT * FROM students_courses";
 
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-
-            while (rs.next()) {
-                int studentId = rs.getInt("students_id");
-                int courseId = rs.getInt("courses_id");
-
-                // Format as a readable string
-                String record = "Student ID: " + studentId + ", Course ID: " + courseId;
-                studentCourses.add(record);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return studentCourses;
-}
-*/
 public List<String> getStudentsCoursesWithNames() {
         List<String> studentCourses = new ArrayList<>();
         String query = "SELECT s.fName, s.lName, c.name AS courseName, c.description " +
@@ -123,12 +100,12 @@ public List<String> getStudentsCoursesWithNames() {
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                courses.add(new Course(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getInt("yhp"),
-                        rs.getString("description")));
 
+                    int id = rs.getInt("id");
+                      String name =  rs.getString("name");
+                       int yhp = rs.getInt("yhp");
+                      String description =  rs.getString("description");
+                courses.add(new Course(id, name, yhp, description, null));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -163,7 +140,7 @@ public List<String> getStudentsCoursesWithNames() {
 
         return student;
     }
-
+//TODO Do i need this?
     public List<Teacher> getAllTeacher() {
         List<Teacher> teacher = new ArrayList<>();
         String query = "SELECT * FROM Teachers";
@@ -220,6 +197,40 @@ public List<String> getStudentsCoursesWithNames() {
         }
         return courses;
     }
+    public List<Course> getCoursesWithTeacherForStudent(String username) {
+        List<Course> courses = new ArrayList<>();
+        String query = "SELECT c.id, c.name, c.yhp, c.description, " +
+                "t.fName AS teacherFirstName, t.lName AS teacherLastName " +
+                "FROM courses c " +
+                "JOIN students_courses sc ON c.id = sc.courses_id " +
+                "JOIN students s ON sc.students_id = s.id " +
+                "JOIN teachers_courses tc ON c.id = tc.courses_id " +
+                "JOIN teachers t ON tc.teachers_id = t.id " +
+                "WHERE s.username = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, username);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    int yhp = rs.getInt("yhp");
+                    String description = rs.getString("description");
+                    String teacherName = rs.getString("teacherFirstName") + " " + rs.getString("teacherLastName");
+
+                    // Add to list
+                    courses.add(new Course(id, name, yhp, description, teacherName));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courses;
+    }
+
 
     public List<Course> getCoursesForTeacher(String username) {
         String query = "SELECT c.id, c.name, c.yhp, c.description, s.fName AS studentName " +
