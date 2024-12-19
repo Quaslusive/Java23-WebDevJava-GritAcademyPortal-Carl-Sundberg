@@ -35,7 +35,7 @@ System.out.println("UserPageServlet doGet");
             switch (user.getUserType()) {
                 case STUDENT:
 
-                    List<StudentCourseBean> studentCourses = db.getStudentsCoursesWithNames();
+                    List<StudentCourse> studentCourses = db.getStudentsCoursesWithNames();
                     request.setAttribute("studentCourses", studentCourses);
 
                     // Forward to JSP
@@ -118,12 +118,12 @@ System.out.println("UserPageServlet doGet");
 
 
         System.out.println("UserPageServlet doPOST");
-        List<StudentCourseBean> studentCourseData = db.getStudentsCoursesWithNames();
+        List<StudentCourse> studentCourseData = db.getStudentsCoursesWithNames();
         // Debug: Log or print the fetched data
         System.out.println("Fetched Student-Course Data: " + studentCourseData);
 
         if (studentCourseData != null && !studentCourseData.isEmpty()) {
-            for (StudentCourseBean record : studentCourseData) {
+            for (StudentCourse record : studentCourseData) {
                 System.out.println(record.getStudentName() + " - " + record.getCourseName() + " - " + record.getCourseDescription() + " - " + record.getTeacherName());
             }
         } else {
@@ -177,7 +177,7 @@ System.out.println("UserPageServlet doGet");
                 String studentId = req.getParameter("studentId");
                 if (studentId != null && !studentId.isEmpty()) {
                     int id = Integer.parseInt(studentId);
-                    req.setAttribute("courseData", db.getCoursesForStudent(user.getUsername()));
+               //     req.setAttribute("courseData", db.getCoursesForStudent(user.getUsername()));
                     forwardToPage(req, resp, "/JSP/courses.jsp");
                 } else {
                     System.out.println("Invalid student ID received.");
