@@ -10,9 +10,10 @@ public class Main {
 
         // Get the list of all courses
         List<Course> courses = database.getAllCourses();
-        List<Teacher> teachers = database.getAllTeachers();
+        List<Course> coursesforStudents = database.getCoursesForStudent(null);
         List<Student> students = database.getAllStudents();
         List<StudentCourseBean> studentCourses = database.getStudentsCoursesWithNames();
+       // List<CourseDetails> courseDetails = database.getDetailedCoursesForStudent(null);
 
 
         // Print out each course to the console
@@ -21,15 +22,6 @@ public class Main {
             System.out.println("Course Name: " + course.getName());
             System.out.println("YHP: " + course.getYhp());
             System.out.println("Description: " + course.getDescription());
-            System.out.println("-------------------------------------");
-        }
-        for (Teacher teacher : teachers) {
-            System.out.println("Teacher ID: " + teacher.getId());
-            System.out.println("First Name: " + teacher.getFname());
-            System.out.println("Last name: " + teacher.getLname());
-            System.out.println("Town: " + teacher.getTown());
-            System.out.println("email: " + teacher.getEmail());
-            System.out.println("phone number: " + teacher.getPhone());
             System.out.println("-------------------------------------");
         }
 
@@ -49,6 +41,9 @@ public class Main {
             System.out.println("-------------------------------------");
         }
       //  System.out.println(database.getStudentsCourses1());
-        System.out.println(database.getStudentsCoursesWithNames());
+    //    System.out.println(database.getStudentsCoursesWithNames());
+        System.out.println(coursesforStudents);
+
+
     }
 }

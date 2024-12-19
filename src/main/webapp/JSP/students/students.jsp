@@ -8,11 +8,14 @@
 </head>
 <body>
 <%@include file="/JSP/Fragments/navBarStudentInclude.jsp"%>
-<h2>Welcome ${user.fname} ${user.lname}!</h2>
-<p>test studenbts </p>
+<h2 style="text-align: center">Welcome ${user.fname} ${user.lname}!</h2>
+
 
 <%@include file="/JSP/students/studentUserPage.jsp"%>
+
+<%--
 <%@ include file="/JSP/Fragments/courseListFragment.jsp" %>
+--%>
 
 </body>
 </html>

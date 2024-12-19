@@ -26,6 +26,7 @@
     <%@ include file="/JSP/Fragments/studentCoursesFragment.jsp" %>
 </div>
 
+
     <%@ include file="/JSP/Fragments/footerInclude.jsp" %>
 </body>
 </html>

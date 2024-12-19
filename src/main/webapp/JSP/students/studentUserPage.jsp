@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,58 +11,52 @@
 </head>
 <body>
 
+<%@include file="/JSP/Fragments/navBarStudentInclude.jsp"%>
 <!-- Main Content -->
 <div class="container">
     <h1 style="text-align:center; color:#333;">Welcome, ${user.username}</h1>
 
-
+<%--
+    <!-- Enrolled Courses -->
     <div class="container">
-        <h2>Available Courses fasf</h2>
-        <%@ include file="/JSP/Fragments/studentCoursesFragment.jsp" %>
+        <h2>Your Enrolled Courses</h2>
+        <c:if test="${empty detailedCourses}">
+            <p>You are not enrolled in any courses.</p>
+        </c:if>
+        <c:if test="${not empty detailedCourses}">
+            <c:forEach var="course" items="${detailedCourses}">
+                <div class="course-item">
+                    <h3>${course.courseName}</h3>
+                    <p><strong>Description:</strong> ${course.courseDescription}</p>
+                    <p><strong>Teacher:</strong> ${course.teacherName}</p>
+                    <h4>Classmates:</h4>
+                    <ul>
+                        <c:forEach var="student" items="${course.students}">
+                            <li>${student.fname} ${student.lname}</li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </c:forEach>
+        </c:if>
+    </div>
+--%>
+
+    <!-- Select Course and Fetch Classmates -->
+    <div class="select-course">
+        <h2>Select Course to View Classmates</h2>
+        <form action="${pageContext.request.contextPath}/userPage" method="POST">
+            <label for="selectedCourseId">Select a Course:</label>
+            <select id="selectedCourseId" name="selectedCourseId">
+                <c:forEach var="course" items="${courseData}">
+                    <option value="${course.id}">${course.name}</option>
+                </c:forEach>
+            </select>
+            <button type="submit" name="showStudents">Show Classmates</button>
+        </form>
     </div>
 
-
-
-
-    <!-- Student Course List -->
-    <h2>Your Enrolled Courses</h2>
-    <c:if test="${empty courseData}">
-        <p>You are not enrolled in any courses.</p>
-    </c:if>
-    <c:if test="${not empty courseData}">
-        <table>
-            <thead>
-            <tr>
-                <th>Course Name</th>
-                <th>Description</th>
-                <th>Teacher</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="course" items="${courseData}">
-                <tr>
-                    <td>${course.name}</td>
-                    <td>${course.description}</td>
-                    <td>${course.teacherName}</td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </c:if>
-
-    <!-- Student's Classmates Section -->
-    <h2>Find Your Classmates</h2>
-    <form action="${pageContext.request.contextPath}/userPage" method="post">
-        <label for="selectedCourseId">Select a Course:</label>
-        <select id="selectedCourseId" name="selectedCourseId">
-            <c:forEach var="course" items="${courseData}">
-                <option value="${course.id}">${course.name}</option>
-            </c:forEach>
-        </select>
-        <button type="submit" name="showStudents">Show Classmates</button>
-    </form>
-
-    <!-- Classmate Data -->
+<%--
+    <!-- Display Classmates -->
     <c:if test="${not empty studentData}">
         <h2>Your Classmates</h2>
         <table>
@@ -87,12 +82,10 @@
             </tbody>
         </table>
     </c:if>
+  --%>
 </div>
 
-<!-- Footer -->
-<div class="footer">
-    <span>&copy; 2024 Grit Academy Portal</span>
-    <span>Contact: support@gritacademy.com</span>
-</div>
+
+<%@include file="/JSP/Fragments/footerInclude.jsp"%>
 </body>
 </html>

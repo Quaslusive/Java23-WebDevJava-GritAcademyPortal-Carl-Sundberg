@@ -9,7 +9,7 @@
 <body>
 <%@include file="/JSP/Fragments/navBarTeacherInclude.jsp"%>
 <h2>Welcome ${user.fname} ${user.lname}!</h2>
-<p>test teacher</p>
 
+<%@include file="/JSP/teachers/teacherUserPage.jsp"%>
 </body>
 </html>
