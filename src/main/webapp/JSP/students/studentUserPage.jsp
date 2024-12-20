@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,14 +10,12 @@
 </head>
 <body>
 <%@include file="/JSP/Fragments/navBarStudentInclude.jsp"%>
-<!-- Main Content -->
 <div class="container">
     <h1>Student Dashboard</h1>
     <!-- Form for fetching students and courses -->
     <form action="${pageContext.request.contextPath}/userPage" method="POST">
-        <button type="submit" name="action" value="viewStudentsEnrollment">View All Students</button>
+        <button type="submit" name="action" value="viewStudentsEnrollment">View all classmates, courses and teachers</button>
     </form>
-
 
     <!-- Display Students -->
     <c:if test="${not empty studentCourses}">

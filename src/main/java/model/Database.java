@@ -28,7 +28,7 @@ public class Database {
     }
 
     private UserBean findUser(String username, String tableName, UserType userType) {
-        String query = "SELECT id, username, password, fName, lName FROM " + tableName + " WHERE username = ?";
+       String query = "SELECT id, username, password, fName, lName, privilege_type FROM " + tableName + " WHERE username = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, username);
@@ -42,9 +42,12 @@ public class Database {
                     user.setLname(rs.getString("lName"));
                     user.setUserType(userType);
 
-                    /*String privilege_type = rs.getString("privilege_type");
-                    user.setPrivilegeType(PrivilegeType.valueOf(privilege_type.toUpperCase()));
-                    System.out.println(privilege_type);*/
+                    String privilegeType = rs.getString("privilege_type");
+                    try {
+                        user.setPrivilegeType(PrivilegeType.valueOf(privilegeType.toUpperCase()));
+                    } catch (IllegalArgumentException | NullPointerException e) {
+                        user.setPrivilegeType(PrivilegeType.USER);
+                    }
                     return user;
                 }
             }
@@ -86,33 +89,6 @@ public class Database {
         }
         return studentCourses;
     }
-
-
-/*
-
-    public List<StudentCourseBean> getStudentsCoursesWithNames() {
-        List<StudentCourseBean> studentCourses = new ArrayList<>();
-        String query = "SELECT s.fName, s.lName, c.name AS courseName, c.description " +
-                "FROM students_courses sc " +
-                "JOIN students s ON sc.students_id = s.id " +
-                "JOIN courses c ON sc.courses_id = c.id";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                studentCourses.add(new StudentCourseBean(
-                        rs.getString("fName") + " " + rs.getString("lName"),
-                        rs.getString("courseName"),
-                        rs.getString("description")
-                ));
-            }
-        } catch (SQLException e) {
-            System.err.println("Error fetching students-courses with names.");
-            e.printStackTrace();
-        }
-        return studentCourses;
-    }
-*/
 
     public List<Course> getAllCourses() {
         List<Course> courses = new ArrayList<>();
@@ -160,34 +136,4 @@ public class Database {
         }
         return students;
     }
-
-/*    public List<Course> getCoursesForStudent(String username) {
-        String query = "SELECT c.id, c.name, c.yhp, c.description, t.fName AS teacherName " +
-                "FROM courses c " +
-                "JOIN students_courses sc ON c.id = sc.courses_id " +
-                "JOIN students s ON sc.students_id = s.id " +
-                "JOIN teachers_courses tc ON c.id = tc.courses_id " +
-                "JOIN teachers t ON tc.teachers_id = t.id " +
-                "WHERE s.username = ?";
-        List<Course> courses = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, username);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    courses.add(new Course(
-                            rs.getInt("id"),
-                            rs.getString("name"),
-                            rs.getInt("yhp"),
-                            rs.getString("description"),
-                            rs.getString("teacherName")
-                    ));
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error fetching courses for student: " + username);
-            e.printStackTrace();
-        }
-        return courses;
-    }*/
 }

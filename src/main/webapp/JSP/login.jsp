@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<%@ include file="/JSP/Fragments/navBarGuestInclude.jsp" %>
+<%@ include file="/JSP/Fragments/navbarDefaultInclude.jsp" %>
 <div class="container">
     <h2>Login</h2>
 
@@ -45,6 +45,10 @@
     <h4>Student: Marie Curie</h4>
     <p>Username: pass </p>
     <p>Password: pass</p>
+
+    <h4>Admin: James Gaylord</h4>
+    <p>Username: admin </p>
+    <p>Password: admin</p>
 </div>
 
 <%@ include file="/JSP/Fragments/footerInclude.jsp" %>

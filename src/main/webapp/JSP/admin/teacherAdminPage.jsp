@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
+<%@include file="/JSP/Fragments/navBarAdminInclude.jsp"%>
 <div class="container">
     <h1>Teacher Admin Dashboard</h1>
     <!-- Form for fetching all data -->
     <form action="${pageContext.request.contextPath}/userPage" method="POST">
         <button type="submit" name="action" value="viewStudents">View All Students</button>
         <button type="submit" name="action" value="viewCourses">View All Courses</button>
-        <button type="submit" name="action" value="viewStudentsEnrollment">View All Teachers</button>
+        <button type="submit" name="action" value="viewEnrollment">View Enrollment</button>
     </form>
 
     <!-- Display Students -->
@@ -70,7 +71,7 @@
 
     <!-- Display student Courses -->
     <c:if test="${not empty studentCourses}">
-        <h2>All Students</h2>
+        <h2>Enrollment</h2>
         <table>
             <thead>
             <tr>

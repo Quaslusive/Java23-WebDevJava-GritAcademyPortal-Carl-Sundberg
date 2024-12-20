@@ -67,7 +67,9 @@
             </tbody>
         </table>
     </c:if>
+
 </div>
 <%@include file="/JSP/Fragments/footerInclude.jsp"%>
+
 </body>
 </html>

@@ -5,10 +5,10 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        // Initialize the Database instance
+
         Database database = new Database();
 
-        // Get the list of all courses
+
         List<Course> courses = database.getAllCourses();
      //   List<Course> coursesforStudents = database.getCoursesForStudent(null);
         List<Student> students = database.getAllStudents();

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Värd: 127.0.0.1
--- Tid vid skapande: 20 dec 2024 kl 02:50
+-- Tid vid skapande: 20 dec 2024 kl 17:20
 -- Serverversion: 10.4.32-MariaDB
 -- PHP-version: 8.2.12
 
@@ -62,24 +62,25 @@ CREATE TABLE `students` (
   `email` varchar(100) NOT NULL,
   `phone` varchar(15) DEFAULT NULL,
   `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `privilege_type` enum('USER','ADMIN') DEFAULT 'USER'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumpning av Data i tabell `students`
 --
 
-INSERT INTO `students` (`id`, `fName`, `lName`, `town`, `email`, `phone`, `username`, `password`) VALUES
-(1, 'Carl', 'Sundberg', 'Lund', 'carl.sundberg@gritacademy.se', '123456789', 'carsun', 'carsun'),
-(2, 'Marie', 'Curie', 'Warsaw', 'Marie Curie@hotmail.com', '846404623', 'pass', 'pass'),
-(3, 'Håkan ', 'Lans ', 'Uppsala', 'Håkan@email.com', '1245236', 'LansAsk', 'LansAsk'),
-(4, 'Jethro ', 'Tull', 'Berkshire', 'Berkshire@gmail.com', '75454574', 'TullTull', 'TullTull'),
-(5, 'Jan', 'van Eyck', 'Maaseik', 'Maaseik@gmail.com', '545612184', 'EyckEyck', 'EyckEyck'),
-(6, 'Yuri', 'Knorozov', 'Pivdenne', 'Pivdenne@gmail.com', '5453651586', 'YuriYuri69', 'YuriYuri69'),
-(7, 'Norah', 'Vincent', 'Detroit', 'Detroit@hotmail.com', '555-523325', 'Vincent420', 'Vincent420'),
-(8, 'Ada', 'Lovelace', 'London', 'London@yahoo.com', '678234678', 'AdaYahoo', 'AdaYahoo'),
-(9, 'Daphne ', 'Caruana Galizia', 'Sliema', 'Sliema@outook.com', '42353246', 'Caruana420', 'Caruana420'),
-(10, 'Stevie ', 'Nicks', 'Phoenix', 'Phoenix@.co.uk.com', '23456426', 'StevieStevie ', 'StevieStevie ');
+INSERT INTO `students` (`id`, `fName`, `lName`, `town`, `email`, `phone`, `username`, `password`, `privilege_type`) VALUES
+(1, 'Carl', 'Sundberg', 'Lund', 'carl.sundberg@gritacademy.se', '123456789', 'carsun', 'carsun', 'USER'),
+(2, 'Marie', 'Curie', 'Warsaw', 'Marie Curie@hotmail.com', '846404623', 'pass', 'pass', 'USER'),
+(3, 'Håkan ', 'Lans ', 'Uppsala', 'Håkan@email.com', '1245236', 'LansAsk', 'LansAsk', 'USER'),
+(4, 'Jethro ', 'Tull', 'Berkshire', 'Berkshire@gmail.com', '75454574', 'TullTull', 'TullTull', 'USER'),
+(5, 'Jan', 'van Eyck', 'Maaseik', 'Maaseik@gmail.com', '545612184', 'EyckEyck', 'EyckEyck', 'USER'),
+(6, 'Yuri', 'Knorozov', 'Pivdenne', 'Pivdenne@gmail.com', '5453651586', 'YuriYuri69', 'YuriYuri69', 'USER'),
+(7, 'Norah', 'Vincent', 'Detroit', 'Detroit@hotmail.com', '555-523325', 'Vincent420', 'Vincent420', 'USER'),
+(8, 'Ada', 'Lovelace', 'London', 'London@yahoo.com', '678234678', 'AdaYahoo', 'AdaYahoo', 'USER'),
+(9, 'Daphne ', 'Caruana Galizia', 'Sliema', 'Sliema@outook.com', '42353246', 'Caruana420', 'Caruana420', 'USER'),
+(10, 'Stevie ', 'Nicks', 'Phoenix', 'Phoenix@.co.uk.com', '23456426', 'StevieStevie ', 'StevieStevie ', 'USER');
 
 -- --------------------------------------------------------
 

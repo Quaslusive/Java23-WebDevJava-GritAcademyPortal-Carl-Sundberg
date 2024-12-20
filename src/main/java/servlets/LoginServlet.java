@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("loginServlet doPost");
+
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -61,10 +61,14 @@ public class LoginServlet extends HttpServlet {
             } else {
                 response.sendRedirect(request.getContextPath() + "/JSP/login.jsp?error=Invalid user type");
             }
-
+            System.out.println("loginServlet doPost deets");
+            System.out.println("...................................................");
             System.out.println("username: " + username + ", password: " + password);
-            System.out.println("User in session: " + user.getUsername());
+            System.out.println("User in session: " + user.getFname() + " " + user.getLname());
             System.out.println("User type: " + user.getUserType());
+            System.out.println("User privilege type: " + user.getPrivilegeType());
+            System.out.println("...................................................");
+
 
         } else {
             response.sendRedirect(request.getContextPath() + "/JSP/login.jsp?error=Invalid username or password");
