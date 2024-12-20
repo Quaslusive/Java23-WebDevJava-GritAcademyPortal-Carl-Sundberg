@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<%@ include file="/JSP/Fragments/navBarDefaultInclude.jsp" %>
+<%@ include file="/JSP/Fragments/navBarGuestInclude.jsp" %>
 <div class="container">
     <h2>Login</h2>
 
