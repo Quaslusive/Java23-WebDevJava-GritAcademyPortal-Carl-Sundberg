@@ -21,13 +21,14 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("loginServlet doGet");
         resp.sendRedirect(req.getContextPath() + "/JSP/login.jsp");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        System.out.println("loginServlet doPost");
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -38,33 +39,25 @@ public class LoginServlet extends HttpServlet {
             guestUser.setUsername("Guest");
             guestUser.setStateType(StateType.ANONYMOUS);
             session.setAttribute("user", guestUser);
-            //  response.sendRedirect(request.getContextPath() + "/JSP/userPage.jsp");
-
+            response.sendRedirect(request.getContextPath() + "/JSP/guest/guestUserPage.jsp");
             // Paul Rudd predicted the future av AI
-            response.sendRedirect("https://celeryman.alexmeub.com/");
+            // response.sendRedirect("https://celeryman.alexmeub.com/");
             return;
         }
-
         UserBean user = db.findUserByUsername(username);
 
         if (user != null && password.equals(user.getPassword())) {
             user.setStateType(StateType.CONFIRMED);
             session.setAttribute("user", user);
 
-            // Kontrollera user type och omdirigera
             if (user.getUserType() == UserType.TEACHER) {
-                response.sendRedirect(request.getContextPath() + "/JSP/teachers/teacherUserPage.jsp");
-            //    response.sendRedirect(request.getContextPath() + "/JSP/teachers/teachers.jsp");
-
-              //  response.sendRedirect(request.getContextPath() + "/JSP/teachers/teacherUserPage.jsp");
-/*
-                response.sendRedirect(request.getContextPath() + "/JSP/teacherUserPage.jsp");
-*/
-                /*response.sendRedirect(request.getContextPath() + "/JSP/userPage.jsp");*/
-
+                if (user.getPrivilegeType() == PrivilegeType.ADMIN) {
+                    response.sendRedirect(request.getContextPath() + "/JSP/admin/teacherAdminPage.jsp");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/JSP/teachers/teacherUserPage.jsp");
+                }
             } else if (user.getUserType() == UserType.STUDENT) {
                 response.sendRedirect(request.getContextPath() + "/JSP/students/studentUserPage.jsp");
-               // response.sendRedirect(request.getContextPath() + "/JSP/students/students.jsp");
             } else {
                 response.sendRedirect(request.getContextPath() + "/JSP/login.jsp?error=Invalid user type");
             }

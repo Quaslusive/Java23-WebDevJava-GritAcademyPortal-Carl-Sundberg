@@ -37,6 +37,14 @@
             <p class="error">${param.error}</p>
         </c:if>
     </form>
+
+    <h4>Teacher: Bob Berger</h4>
+    <p>Username: test </p>
+    <p>Password: test</p>
+
+    <h4>Student: Marie Curie</h4>
+    <p>Username: pass </p>
+    <p>Password: pass</p>
 </div>
 
 <%@ include file="/JSP/Fragments/footerInclude.jsp" %>

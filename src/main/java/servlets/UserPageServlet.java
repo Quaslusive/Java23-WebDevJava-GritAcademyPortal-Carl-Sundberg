@@ -20,7 +20,7 @@ public class UserPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-System.out.println("UserPageServlet doGet");
+        System.out.println("UserPageServlet doGet");
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute("user") == null) {
@@ -73,17 +73,15 @@ System.out.println("UserPageServlet doGet");
     private void handleStudentUser(HttpServletRequest request, HttpServletResponse response, Database db, UserBean user)
             throws ServletException, IOException {
         List<Course> studentCourses = db.getAllCourses();
-       // List<String> studentCourses = db.getStudentsCoursesWithNames();
+        // List<String> studentCourses = db.getStudentsCoursesWithNames();
         request.setAttribute("studentCourses", studentCourses);
 
         // Forward to JSP
         request.getRequestDispatcher("/JSP/students/studentUserPage.jsp").forward(request, response);
-       // request.getRequestDispatcher("/JSP/students/students.jsp").forward(request, response);
 
 
-
-      //  request.setAttribute("courseData", db.getCoursesForStudent(user.getUsername()));
-      //  forwardToPage(request, response, "/JSP/students/studentUserPage.jsp");
+        //  request.setAttribute("courseData", db.getCoursesForStudent(user.getUsername()));
+        //  forwardToPage(request, response, "/JSP/students/studentUserPage.jsp");
     }
 
     private void handleTeacherUser(HttpServletRequest request, HttpServletResponse response, Database db)
@@ -112,89 +110,41 @@ System.out.println("UserPageServlet doGet");
             resp.sendRedirect(req.getContextPath() + "/JSP/login.jsp");
             return;
         }
-
         UserBean user = (UserBean) session.getAttribute("user");
         Database db = new Database();
 
 
         System.out.println("UserPageServlet doPOST");
-        List<StudentCourse> studentCourseData = db.getStudentsCoursesWithNames();
-        // Debug: Log or print the fetched data
-        System.out.println("Fetched Student-Course Data: " + studentCourseData);
-
-        if (studentCourseData != null && !studentCourseData.isEmpty()) {
-            for (StudentCourse record : studentCourseData) {
-                System.out.println(record.getStudentName() + " - " + record.getCourseName() + " - " + record.getCourseDescription() + " - " + record.getTeacherName());
-            }
-        } else {
-            System.out.println("No data retrieved from the database.");
-        }
-      /*  List<CourseDetails> detailedCourses = db.getDetailedCoursesForStudent(user.getUsername());
-        // Debug: Log or print the fetched data
-        System.out.println("Fetched Student-Course Data: " + detailedCourses);
-
-        if (detailedCourses != null && !detailedCourses.isEmpty()) {
-            for (CourseDetails record : detailedCourses) {
-                System.out.println(record.getStudents() + " - " + record.getCourseName()+ " - " + record.getCourseId()+ " - " + record.getCourseDescription()+ " - " + record.getTeacherName());
-            }
-        } else {
-            System.out.println("No data retrieved from the database.");
-        }*/
-
-/*
-        List<Course> coursesForStudent = db.getCoursesForStudent(user.getUsername());
-        // Debug: Log or print the fetched data
-        System.out.println("Fetched Student-Course Data: " + coursesForStudent);
-
-        if (coursesForStudent != null && !coursesForStudent.isEmpty()) {
-            for (Course record : coursesForStudent) {
-                System.out.println(record.getName() + " - " + record.getYhp()+ " - " + record.getDescription()+ " - " + record.getTeacherName());
-            }
-        } else {
-            System.out.println("No data retrieved from the database.");
-        }
-*/
 
         String action = req.getParameter("action");
-
 
         try {
             if ("allStudents".equalsIgnoreCase(action)) {
                 // Fetch all students and forward to studentsInfo.jsp
                 req.setAttribute("allStudents", db.getAllStudents());
                 req.getRequestDispatcher("/JSP/teachers/teacherUserPage.jsp").forward(req, resp);
-            } else if ("viewAttendance".equalsIgnoreCase(action)) {
-                // Forward to courseAttendance.jsp
-                forwardToPage(req, resp, "/JSPs/Teachers/courseAttendance.jsp");
 
-            } else if (req.getParameter("showStudents") != null) {
+            } else if ("viewStudents".equalsIgnoreCase(action)) {
+                // Fetch all students and forward to JSP
+                req.setAttribute("allStudents", db.getAllStudents());
+                req.getRequestDispatcher("/JSP/admin/teacherAdminPage.jsp").forward(req, resp);
+
+            } else if ("viewCourses".equalsIgnoreCase(action)) {
+                // Fetch all courses and forward to JSP
+                req.setAttribute("allCourses", db.getAllCourses());
+                req.getRequestDispatcher("/JSP/admin/teacherAdminPage.jsp").forward(req, resp);
+
+
+            } else if ("viewStudentsEnrollment".equalsIgnoreCase(action)) {
                 // Fetch detailed courses or student-course data and forward to studentCourses.jsp
                 req.setAttribute("studentCourses", db.getStudentsCoursesWithNames());
-                forwardToPage(req, resp, "/JSP/students/studentCourses.jsp");
+                forwardToPage(req, resp, "/JSP/students/studentUserPage.jsp");
 
-            } else if (req.getParameter("showStudentId") != null) {
-                // Fetch and display course details for a specific student
-                String studentId = req.getParameter("studentId");
-                if (studentId != null && !studentId.isEmpty()) {
-                    int id = Integer.parseInt(studentId);
-               //     req.setAttribute("courseData", db.getCoursesForStudent(user.getUsername()));
-                    forwardToPage(req, resp, "/JSP/courses.jsp");
-                } else {
-                    System.out.println("Invalid student ID received.");
-                    req.setAttribute("error", "Invalid student ID. Please try again.");
-                    forwardToPage(req, resp, "/JSP/error.jsp");
-                }
 
             } else if ("allCourses".equalsIgnoreCase(action)) {
                 // Fetch all courses and forward to teacherUserPage.jsp
                 req.setAttribute("allCourses", db.getAllCourses());
                 forwardToPage(req, resp, "/JSP/teachers/teacherUserPage.jsp");
-
-            } else {
-                // Handle invalid actions
-                System.out.println("Invalid action received: " + action);
-                req.setAttribute("error", "Invalid action. Please try again.");
-                req.getRequestDispatcher("/JSP/error.jsp").forward(req, resp);
             }
         } catch (Exception e) {
             // Log and handle any exceptions

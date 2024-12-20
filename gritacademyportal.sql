@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Värd: 127.0.0.1
--- Tid vid skapande: 10 okt 2024 kl 17:42
+-- Tid vid skapande: 20 dec 2024 kl 02:50
 -- Serverversion: 10.4.32-MariaDB
 -- PHP-version: 8.2.12
 
@@ -71,7 +71,15 @@ CREATE TABLE `students` (
 
 INSERT INTO `students` (`id`, `fName`, `lName`, `town`, `email`, `phone`, `username`, `password`) VALUES
 (1, 'Carl', 'Sundberg', 'Lund', 'carl.sundberg@gritacademy.se', '123456789', 'carsun', 'carsun'),
-(2, 'Marie', 'Curie', 'Warsaw', 'Marie Curie@hotmail.com', '846404623', 'curcuri', 'Typhus420');
+(2, 'Marie', 'Curie', 'Warsaw', 'Marie Curie@hotmail.com', '846404623', 'pass', 'pass'),
+(3, 'Håkan ', 'Lans ', 'Uppsala', 'Håkan@email.com', '1245236', 'LansAsk', 'LansAsk'),
+(4, 'Jethro ', 'Tull', 'Berkshire', 'Berkshire@gmail.com', '75454574', 'TullTull', 'TullTull'),
+(5, 'Jan', 'van Eyck', 'Maaseik', 'Maaseik@gmail.com', '545612184', 'EyckEyck', 'EyckEyck'),
+(6, 'Yuri', 'Knorozov', 'Pivdenne', 'Pivdenne@gmail.com', '5453651586', 'YuriYuri69', 'YuriYuri69'),
+(7, 'Norah', 'Vincent', 'Detroit', 'Detroit@hotmail.com', '555-523325', 'Vincent420', 'Vincent420'),
+(8, 'Ada', 'Lovelace', 'London', 'London@yahoo.com', '678234678', 'AdaYahoo', 'AdaYahoo'),
+(9, 'Daphne ', 'Caruana Galizia', 'Sliema', 'Sliema@outook.com', '42353246', 'Caruana420', 'Caruana420'),
+(10, 'Stevie ', 'Nicks', 'Phoenix', 'Phoenix@.co.uk.com', '23456426', 'StevieStevie ', 'StevieStevie ');
 
 -- --------------------------------------------------------
 
@@ -91,7 +99,16 @@ CREATE TABLE `students_courses` (
 
 INSERT INTO `students_courses` (`id`, `students_id`, `courses_id`) VALUES
 (1, 1, 4),
-(2, 2, 6);
+(2, 2, 6),
+(4, 8, 3),
+(5, 9, 8),
+(6, 3, 4),
+(7, 5, 2),
+(8, 4, 7),
+(10, 10, 1),
+(11, 6, 5),
+(13, 7, 6),
+(14, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -108,16 +125,19 @@ CREATE TABLE `teachers` (
   `phone` varchar(15) DEFAULT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `privilage_type` enum('USER','ADMIN') NOT NULL DEFAULT 'USER'
+  `privilege_type` enum('USER','ADMIN') NOT NULL DEFAULT 'USER'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumpning av Data i tabell `teachers`
 --
 
-INSERT INTO `teachers` (`id`, `fName`, `lName`, `town`, `email`, `phone`, `username`, `password`, `privilage_type`) VALUES
-(1, 'Admin', 'User', 'TownName', 'admin@gritacademy.se', '1234567890', 'admin', 'admin', 'ADMIN'),
-(2, 'Clara', 'Leivas', 'Malmö', 'Clara.Leivas@gritacademy.se', '872390895', 'Leivas4ever', 'jf82iojf987278732', 'USER');
+INSERT INTO `teachers` (`id`, `fName`, `lName`, `town`, `email`, `phone`, `username`, `password`, `privilege_type`) VALUES
+(1, 'James', 'Gaylord', 'York', 'admin@gritacademy.se', '1234567890', 'admin', 'admin', 'ADMIN'),
+(2, 'Clara', 'Leivas', 'Malmö', 'Clara.Leivas@gritacademy.se', '872390895', 'Leivas4ever', 'jf82iojf987278732', 'USER'),
+(3, 'Bob', 'Berger', 'Elswere', 'Elswere@mail.com', '2345678876', 'test', 'test', 'USER'),
+(4, 'Alf', 'Lysholm', 'Stocholm', 'Stockholm@gmail.com', '32551234325', 'AlfAlf', 'AlfAlf', 'USER'),
+(5, 'Evelyn ', 'McHale', 'New York', 'McHale@gmail.com', '555-3464343', 'McHaleMcHale', 'McHaleMcHale', 'USER');
 
 -- --------------------------------------------------------
 
@@ -139,7 +159,11 @@ INSERT INTO `teachers_courses` (`id`, `teachers_id`, `courses_id`) VALUES
 (1, 2, 7),
 (2, 2, 8),
 (3, 1, 6),
-(4, 1, 5);
+(4, 1, 5),
+(5, 3, 1),
+(6, 3, 3),
+(7, 4, 4),
+(8, 4, 2);
 
 --
 -- Index för dumpade tabeller
@@ -191,31 +215,31 @@ ALTER TABLE `teachers_courses`
 -- AUTO_INCREMENT för tabell `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT för tabell `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT för tabell `students_courses`
 --
 ALTER TABLE `students_courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT för tabell `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT för tabell `teachers_courses`
 --
 ALTER TABLE `teachers_courses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restriktioner för dumpade tabeller

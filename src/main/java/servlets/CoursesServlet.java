@@ -21,10 +21,8 @@ public class CoursesServlet extends HttpServlet {
         Database db = new Database();
         UserBean user = (UserBean) session.getAttribute("user");
 
-        System.out.println("User type is: " + user.getUserType());
         request.setAttribute("courseData", db.getAllCourses());
         request.getRequestDispatcher("JSP/courses.jsp").forward(request, response);
+        System.out.println("CoursesServlet");
     }
-
-    }
-
+}

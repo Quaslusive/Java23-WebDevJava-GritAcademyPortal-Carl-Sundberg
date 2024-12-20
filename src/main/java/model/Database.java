@@ -41,6 +41,10 @@ public class Database {
                     user.setFname(rs.getString("fName"));
                     user.setLname(rs.getString("lName"));
                     user.setUserType(userType);
+
+                    /*String privilege_type = rs.getString("privilege_type");
+                    user.setPrivilegeType(PrivilegeType.valueOf(privilege_type.toUpperCase()));
+                    System.out.println(privilege_type);*/
                     return user;
                 }
             }
@@ -75,6 +79,7 @@ public class Database {
                 // Add the data to the StudentCourseBean
                 studentCourses.add(new StudentCourse(studentName, courseName, courseDescription, teacherName));
             }
+            System.out.println("getStudentsCoursesWithNames");
         } catch (SQLException e) {
             System.err.println("Error fetching students-courses with names and teachers.");
             e.printStackTrace();
@@ -124,6 +129,7 @@ public class Database {
 
                 ));
             }
+            System.out.println("getAllCourses");
         } catch (SQLException e) {
             System.err.println("Error fetching all courses.");
             e.printStackTrace();
@@ -147,6 +153,7 @@ public class Database {
                         rs.getString("phone")
                 ));
             }
+            System.out.println("getAllStudents");
         } catch (SQLException e) {
             System.err.println("Error fetching all students.");
             e.printStackTrace();
