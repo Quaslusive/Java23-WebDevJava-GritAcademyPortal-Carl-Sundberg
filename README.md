@@ -57,3 +57,10 @@ Servlets
 
     LoginServlet: Manages user authentication and session creation.
     UserPageServlet: Handles user-specific actions based on roles (Student, Teacher, Admin).
+
+Known Bugs 
+
+    1# 
+    Your IDE might rapport that "navbarDefaultInclude.jsp" does not exist in "login.jsp", line 12. THAT IS FALSE. 
+    Simply copy and delate "navbarDefaultInclude.jsp" and paste it at the same place. Doing that might fix it. 
+    
